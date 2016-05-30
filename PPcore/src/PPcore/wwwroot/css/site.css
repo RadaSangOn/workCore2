@@ -111,7 +111,14 @@ color: white;
 background-color: #093D6A;
 }
 
-
+.nav-tabs > li:hover {
+        cursor: pointer;
+    cursor: hand;
+}
+.nav-tabs > li > a:hover {
+    cursor: pointer;
+    cursor: hand;
+}
 
 
 

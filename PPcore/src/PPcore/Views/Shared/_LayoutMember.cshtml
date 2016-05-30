@@ -11,31 +11,54 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-blue">
-                @if (ViewBag.panelBarMenu == "Create")
-                {
-                    <div class="panel-heading">
-                        <table id="" class="panelTopBar">
-                            <tr>
-                                <td id="panelBar1" class="panelTopBarActive" onclick="location.href='@Url.Action("Create", "members")'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</td>
-                            </tr>
-                        </table>
-                        </div>
-                }
-                else if (ViewBag.panelBarMenu == "Details")
-                {
-                    <div class="panel-heading" style="background-color:darkgray">
-                        <table id="" class="panelTopBar">
-                            <tr>
-                                <td id="panelBar1" class="panelTopBarDetailsActive" onclick="location.href='@Url.Action("Details", "members")'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</td>
-                            </tr>
-                        </table>
-                        </div>
-                }
-                else
-                {
-                    <div class="panel-heading">
-                    <table id="" class="panelTopBar">
-                        <tr>
+                <div class="panel-body">
+
+                    @if (ViewBag.panelBarMenu == "Create")
+                    {
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            </li>
+                        </ul>
+                    }
+                    else if (ViewBag.panelBarMenu == "Details")
+                    {
+                        <ul class="nav nav-tabs">
+                            <li>
+                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            </li>
+                            <li class="active">
+                                <a href="@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
+                            </li>
+                            <li class="active">
+                                <a href="#messages" data-toggle="tab" style="width:120px;background-color:#E6A21A;color:white;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
+                            </li>
+                            <li class="active">
+                                <a href="#settings" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
+                            </li>
+                            <li class="active">
+                                <a href="#home" data-toggle="tab">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</a>
+                            </li>
+                            <li class="active">
+                                <a href="#profile" data-toggle="tab" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลการศึกษา</div></a>
+                            </li>
+                            <li class="active">
+                                <a href="#messages" data-toggle="tab" style="width:110px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลสุขภาพ</div></a>
+                            </li>
+                            <li class="active">
+                                <a href="#settings" data-toggle="tab">ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
+                            </li>
+                        </ul>
+                    }
+                            <!--
                             <td id="members" onclick="location.href='@Url.Action("Edit", "members", new {id=ViewBag.memberId})'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</td>
                             <td id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})'">ประวัติ<br />การฝึกอบรม</td>
                             <td id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'">ประวัติ<br />การดูงาน</td>
@@ -44,15 +67,21 @@
                             <td id="mem_education" onclick="location.href='@Url.Action("Index", "mem_education", new {memberId=ViewBag.memberId})'">ข้อมูล<br />การศึกษา</td>
                             <td id="mem_health" onclick="location.href='@Url.Action("Index", "mem_health", new {memberId=ViewBag.memberId})'">ข้อมูล<br />สุขภาพ</td>
                             <td id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId})'">ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</td>
-                        </tr>
-                    </table>
-                    </div>
-                }
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                    @RenderBody()
-                </div>
-            </div>
+                                -->
+
+                            <div style="background-color:#093D6A;height:8px;"></div>
+
+                            <div class="tab-content" style="padding-left:5px">
+                                <div class="tab-pane fade in active">
+                                    <br />
+                                    <div>
+                                        @RenderBody()
+                                    </div>
+                                </div>
+
+                            </div>
+</div>
+</div>
         </div>
     </div>
 </div>
