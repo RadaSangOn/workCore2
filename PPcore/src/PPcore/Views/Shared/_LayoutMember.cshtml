@@ -75,16 +75,19 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        //$.datepicker.regional['th'] = {
-        //    dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
-        //    yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
-        //};
-        //$.datepicker.setDefaults($.datepicker.regional['th']);
         $(document).ready(function () {
             var nn = '@ViewContext.RouteData.Values["controller"]';
             $('#' + nn).parent().addClass('active');
 
-            $("#birthdate").datepicker($.datepicker.regional["th"]);
+            if (nn == "members") {
+                $.datepicker.regional['th'] = {
+                    dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
+                    yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
+                };
+                $.datepicker.setDefaults($.datepicker.regional['th']);
+                $("#birthdate").datepicker($.datepicker.regional["th"]);
+            }
+
 
             $('#mem_photo').hide(); $('#cid_card_pic').hide();
 
@@ -98,6 +101,7 @@
                     $('#waitCidCardPhoto').hide(); $('#emptyCidCardPhoto').hide();
                     $('#picCidCardPhotoSrc').attr('src', '/@ViewBag.images_member/@ViewBag.cidCardPhoto'); $('#picCidCardPhoto').show();
                 }
+                $('#btnPrint').show();
             }
             if (act == "Details") {
                 $('input').each(function () {
@@ -114,10 +118,21 @@
                     $('#birthdateButton').attr({ 'disabled': 'disabled' });
                 }
             }
+
+            $('#btnPrint').on('click', function () {
+                var url = '@Url.Action("DetailsPdf", "members", new { id = "__id__" })';
+                //window.location.href = url.replace('__id__', data[1]);
+                //var win = window.open(url.replace('__id__', '@ViewBag.memberId'), '_blank');
+                var win = window.open(url.replace('__id__', '@ViewBag.memberId'));
+                win.focus();
+
+                //window.open(url.replace('__id__', '@ViewBag.memberId'), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+            });
         });
         $('#birthdateButton').click(function () {
             $('#birthdate').datepicker("show");
         });
+
         function dateDefault() {
             if ($("#birthdate").val() == "") { $("#birthdate").datepicker("setDate", new Date()); }
         }

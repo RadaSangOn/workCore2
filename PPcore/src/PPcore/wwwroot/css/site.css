@@ -171,6 +171,27 @@ background-color: #093D6A;
   height: 50px;
 }
 
+.btn-panel-yellow {
+  color: black;
+  background-color: #FFC000;
+  border-color: #FFC000;
+}
+.btn-panel-yellow:focus,
+.btn-panel-yellow.focus {
+  background-color: #FFC000;
+  border-color: #FFC000;
+}
+.btn-panel-yellow:hover {
+  color: white;
+  background-color: #093D6A;
+  border-color: #093D6A;
+}
+.btn-panel-yellow:hover {
+  color: #093D6A;
+  background-color: darkgray;
+  border-color: darkgrey;
+}
+
 .btn-panel-green {
   color: #79eb2a;
   background-color: #fff;
@@ -323,6 +344,17 @@ table.panelTopBar tr td:hover {
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     border: 0px;
 }
+/** dataTables uses bootstrap pagination color*/
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background-color: #FFC000;
+  border-color: #FFC000;
+}
+
 
 .modalForm1 {
     top:25%;

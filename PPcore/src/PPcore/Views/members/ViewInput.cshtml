@@ -1,9 +1,12 @@
 ﻿@model PPcore.Models.member
 
+
+
 <form asp-action="@ViewBag.FormAction">
     <div class="form-horizontal">
-        <div style="position:relative;top:-55px;margin-right:.5em;float:right">
-            <input class="btn btn-panel-green btn-sm" type="@ViewBag.ButtonUpperRightType" value="&nbsp;&nbsp;&nbsp;จัดเก็บ&nbsp;&nbsp;&nbsp;">
+        <div style="position:relative;top:-150px;margin-right:.5em;float:right">
+            <button id="btnSave" type="@ViewBag.ButtonUpperRightType" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-floppy-o" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;จัดเก็บ&nbsp;&nbsp;</button>
+            <div id="btnPrint" class="btn btn-default btn-panel-yellow" style="display:none;">&nbsp;<i class="fa fa-print" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;พิมพ์&nbsp;&nbsp;</div>
         </div>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input asp-for="rowversion" />
@@ -86,7 +89,7 @@
                                         <input asp-for="birthdate" class="form-control" onchange="setAge()" readonly >
                                         <span class="input-group-btn">
                                             <button id="birthdateButton" class="btn btn-default" type="button" style="border-color:orangered;">
-                                                <i class="fa fa-calendar-o"></i>
+                                                <i class="fa fa-calendar"></i>
                                             </button>
                                         </span>
                                     </div>
@@ -385,56 +388,6 @@
                             </div>
                         </div>
                         <input asp-for="cid_card_pic" />
-                        <!--
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <div class="panelPic" style="top:9px;text-align:center;height:110px;">
-                                    &nbsp;&nbsp;&nbsp;<i class="fa fa-credit-card fa-4x" aria-hidden="true" style="color:#b3b3b3"></i><br />
-                                    <div style="color:dimgray;font-size:22px;font-family:'thsarabunnew';"><i class="fa fa-cloud-upload" aria-hidden="true" style="position:relative;top:3px"></i>&nbsp;&nbsp;&nbsp;<b>อัพโหลด</b> <label asp-for="cid_card_pic" class="control-label"></label></div>
-                                </div>
-                                <br />
-                            </div>
-                        </div>
-                        -->
-
-                        <!--
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-4 text-right"><label asp-for="mem_photo" class="control-label"></label></div>
-                                <div class="col-md-7">
-                                    <input asp-for="mem_photo" class="form-control" disabled/>
-                                    <span asp-validation-for="mem_photo" class="text-danger" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1"><br/><br/>
-                                <div class="panelPic">
-                                    <img src="~/images/img1.jpg" style="height:200px;" class="img-thumbnail center-block" />
-                                    <img src="~/images/img2.jpg" style="height:200px;" class="img-thumbnail center-block" />
-                                    <div style="position:absolute;left:0;top:0;">
-                                        
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            <br/>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-4 text-right"><label asp-for="cid_card_pic" class="control-label"></label></div>
-                                <div class="col-md-7">
-                                    <input asp-for="cid_card_pic" class="form-control" disabled/>
-                                    <span asp-validation-for="cid_card_pic" class="text-danger" />
-                                </div>
-                            </div>
-                        </div>
-                            -->
                     </div>
                     <!-- /photo -->
                 </div>
@@ -443,5 +396,4 @@
 
 <form id="formFileMemPhoto" enctype="multipart/form-data"><input id="fileMemPhoto" type="file" style="visibility:hidden" onchange="uploadMemPhoto()" accept="image/*" /></form>
 <form id="formFileCidCardPhoto" enctype="multipart/form-data"><input id="fileCidCardPhoto" type="file" style="visibility:hidden" onchange="uploadCidCardPhoto()" accept="image/*" /></form>
-
 
