@@ -40,7 +40,8 @@ namespace PPcore.Controllers
                 mem_health mh = new mem_health();
                 mh.member_code = member.member_code;
                 return View(mh);
-            } else
+            }
+            else
             {
                 return View(mem_health);
             }

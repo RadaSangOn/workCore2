@@ -16,8 +16,8 @@
                     @if (ViewBag.panelBarMenu == "Create")
                     {
                         <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            <li>
+                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
                             </li>
                         </ul>
                     }
@@ -32,54 +32,37 @@
                     else
                     {
                         <ul class="nav nav-tabs">
-                            <li class="active">
-                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            <li>
+                                <a id="members" onclick="location.href='@Url.Action("Edit", "members", new {id=ViewBag.memberId})'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
                             </li>
-                            <li class="active">
-                                <a href="@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
+                            <li>
+                                <a id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
                             </li>
-                            <li class="active">
-                                <a href="#messages" data-toggle="tab" style="width:120px;background-color:#E6A21A;color:white;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
+                            <li>
+                                <a id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:120px;background-color:#E6A21A;color:white;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
                             </li>
-                            <li class="active">
-                                <a href="#settings" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
+                            <li>
+                                <a id="mem_social" onclick="location.href='@Url.Action("Index", "mem_social", new {memberId=ViewBag.memberId})'" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
                             </li>
-                            <li class="active">
-                                <a href="#home" data-toggle="tab">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</a>
+                            <li>
+                                <a id="mem_reward" onclick="location.href='@Url.Action("Index", "mem_reward", new {memberId=ViewBag.memberId})'" data-toggle="tab">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</a>
                             </li>
-                            <li class="active">
-                                <a href="#profile" data-toggle="tab" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลการศึกษา</div></a>
+                            <li>
+                                <a id="mem_education" onclick="location.href='@Url.Action("Index", "mem_education", new {memberId=ViewBag.memberId})'" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลการศึกษา</div></a>
                             </li>
-                            <li class="active">
-                                <a href="#messages" data-toggle="tab" style="width:110px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลสุขภาพ</div></a>
+                            <li>
+                                <a id="mem_health" onclick="location.href='@Url.Action("Index", "mem_health", new {memberId=ViewBag.memberId})'" style="width:110px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลสุขภาพ</div></a>
                             </li>
-                            <li class="active">
-                                <a href="#settings" data-toggle="tab">ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
+                            <li>
+                                <a id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId})'" >ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
                             </li>
                         </ul>
                     }
-                            <!--
-                            <td id="members" onclick="location.href='@Url.Action("Edit", "members", new {id=ViewBag.memberId})'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</td>
-                            <td id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})'">ประวัติ<br />การฝึกอบรม</td>
-                            <td id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'">ประวัติ<br />การดูงาน</td>
-                            <td id="mem_social" onclick="location.href='@Url.Action("Index", "mem_social", new {memberId=ViewBag.memberId})'">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</td>
-                            <td id="mem_reward" onclick="location.href='@Url.Action("Index", "mem_reward", new {memberId=ViewBag.memberId})'">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</td>
-                            <td id="mem_education" onclick="location.href='@Url.Action("Index", "mem_education", new {memberId=ViewBag.memberId})'">ข้อมูล<br />การศึกษา</td>
-                            <td id="mem_health" onclick="location.href='@Url.Action("Index", "mem_health", new {memberId=ViewBag.memberId})'">ข้อมูล<br />สุขภาพ</td>
-                            <td id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId})'">ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</td>
-                                -->
-
-                            <div style="background-color:#093D6A;height:8px;"></div>
-
-                            <div class="tab-content" style="padding-left:5px">
-                                <div class="tab-pane fade in active">
-                                    <br />
-                                    <div>
-                                        @RenderBody()
-                                    </div>
-                                </div>
-
-                            </div>
+                    <div style="background-color:#093D6A;height:8px;"></div>
+                    <br />
+                    <div>
+                        @RenderBody()
+                    </div>
 </div>
 </div>
         </div>
@@ -92,27 +75,20 @@
     @RenderSection("scripts", required: false)
 
     <script>
-        $.datepicker.regional['th'] = {
-            dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
-            yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
-        };
-        $.datepicker.setDefaults($.datepicker.regional['th']);
+        //$.datepicker.regional['th'] = {
+        //    dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
+        //    yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
+        //};
+        //$.datepicker.setDefaults($.datepicker.regional['th']);
         $(document).ready(function () {
-            var nn = '@ViewContext.RouteData.Values["controller"]'; console.log("nn = "+nn);
-            var act = '@ViewContext.RouteData.Values["action"]';
-            $('#members').removeClass('panelTopBarActive');
-            $('#mem_train_record').removeClass('panelTopBarActive');
-            $('#mem_site_visit').removeClass('panelTopBarActive');
-            $('#mem_social').removeClass('panelTopBarActive');
-            $('#mem_reward').removeClass('panelTopBarActive');
-            $('#mem_education').removeClass('panelTopBarActive');
-            $('#mem_health').removeClass('panelTopBarActive');
-            $('#mem_worklist').removeClass('panelTopBarActive');
-            $('#' + nn).addClass('panelTopBarActive');
+            var nn = '@ViewContext.RouteData.Values["controller"]';
+            $('#' + nn).parent().addClass('active');
 
             $("#birthdate").datepicker($.datepicker.regional["th"]);
 
             $('#mem_photo').hide(); $('#cid_card_pic').hide();
+
+            var act = '@ViewContext.RouteData.Values["action"]';
             if (act != "Create") {
                 if ("@ViewBag.memPhoto") {
                     $('#waitMemPhoto').hide(); $('#emptyMemPhoto').hide();
