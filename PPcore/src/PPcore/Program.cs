@@ -11,6 +11,7 @@ namespace PPcore
     {
         public static void Main(string[] args)
         {
+            //.UseUrls("http://0.0.0.0:80")
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
