@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PPcore.Models;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace PPcore
 {
@@ -65,6 +68,26 @@ namespace PPcore
 
             app.UseStaticFiles();
 
+            /**
+            var supportedCultures = new[]
+            {
+                new CultureInfo("th-TH"),
+            };
+
+            var ci = new CultureInfo("th-TH");
+            ci.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            ci.DateTimeFormat.LongDatePattern = "dd MMMM yyyy";
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(ci),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+            **/
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

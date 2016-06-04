@@ -12,10 +12,9 @@
                 <div class="panel-heading">
                     <div class="pull-left" style="padding-top:5px;">ภาพกิจกรรม</div>
                     <div class="pull-right" style="margin-top:-2px;">
-                        <button class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "members")'">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;&nbsp;เพิ่ม&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                        <button id="btnCreate" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "albums")'">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;สร้างอัลบั้ม&nbsp;&nbsp;&nbsp;</button>
                         <button id="btnEdit" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "members")'">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</button>
                         <button id="btnDetails" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "members")'">&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ดูข้อมูล</button>
-                        <div id="btnPrint" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-print" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;พิมพ์&nbsp;&nbsp;</div>
                     </div>
                 </div>
 
@@ -29,7 +28,7 @@
                                     <th>@Html.DisplayNameFor(model => model.album_name)</th>
                                     <th>@Html.DisplayNameFor(model => model.id)</th>
                                     <th>@Html.DisplayNameFor(model => model.album_desc)</th>
-                                    <th>@Html.DisplayNameFor(model => model.created_date)</th>
+                                    <th>@Html.DisplayNameFor(model => model.album_date)</th>
                                     <th>@Html.DisplayNameFor(model => model.created_by)</th>
                                 </tr>
                             </thead>
@@ -40,7 +39,7 @@
                                         <td>@Html.DisplayFor(modelItem => item.album_name)</td>
                                         <td>@Html.DisplayFor(modelItem => item.id)</td>
                                         <td>@Html.DisplayFor(modelItem => item.album_desc)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.created_date)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.album_date)</td>
                                         <td>@Html.DisplayFor(modelItem => item.created_by)</td>
                                     </tr>
                                 }
@@ -58,35 +57,97 @@
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-8 -->
+
+        <!-- Modal -->
+        <div class="modal fade modalForm1" id="mem_rewardModal" tabindex="-1" role="dialog" aria-labelledby="mem_rewardModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="mem_rewardModalHeader" class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="vertical-align:middle;top:15px">&times;</button>
+                        <h4 class="modal-title" id="mem_rewardModalLabel" style="vertical-align:middle;"></h4>
+                    </div>
+                    <div class="modal-body container-fluid">
+                        <!-- { await Html.RenderPartialAsync("ViewInput", new mem_reward()); } -->
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+
+
+        </div>
+
     </div>
 
 </div>
 
-@section scripts {
+
+@section Scripts {
+    <script src="~/lib/bootstrap/js/modal.js"></script>
     <script>
         $(document).ready(function () {
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
+
+
             $('#btnEdit').on('click', function () {
-                var data = tableMember.row('.selected').data();
-                var url = '@Url.Action("Edit", "members", new { id = "__id__" })';
-                window.location.href = url.replace('__id__', data[1]);
+                var datarow = tableMember.row('.selected').data();
+                $('#mem_rewardModalLabel').text('แก้ไขรางวัลเชิดชูเกียรติที่เคยได้รับ');
+                $('#mem_rewardSubmit').html('บันทึก');
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Edit", "mem_reward")" + "/" + datarow[1],
+                    success: function (data) {
+                        $("#rec_no").val(data.rec_no);
+                        $("#reward_desc").val(data.reward_desc);
+                        $("#rec_no").prop('disabled', true);
+                        $("#reward_desc").prop('disabled', false);
+                        $("#mem_rewardSubmit").click(function (e) {
+                            e.preventDefault();
+                            $.ajax({
+                                type: "POST",
+                                data: {
+                                    id: datarow[1],
+                                    memberId: "@ViewBag.memberId",
+                                    rec_no: $("#rec_no").val(),
+                                    reward_desc: $("#reward_desc").val()
+                                },
+                                url: "@Url.Action("Edit", "mem_reward")",
+                                success: function (data) {
+                                    window.location.href = "@Url.Action("Index", "mem_reward", new {memberId = ViewBag.memberId})";
+                                }
+                            });
+                        });
+                        $('#mem_rewardModal').modal({ backdrop: 'static', keyboard: false });
+                    }
+                });
             });
 
             $('#btnDetails').on('click', function () {
-                var data = tableMember.row('.selected').data();
-                var url = '@Url.Action("Details", "members", new { id = "__id__" })';
-                window.location.href = url.replace('__id__', data[1]);
-            });
-
-            $('#btnPrint').on('click', function () {
-                var data = tableMember.row('.selected').data();
-                var url = '@Url.Action("DetailsPdf", "members", new { id = "__id__" })';
-                //window.location.href = url.replace('__id__', data[1]);
-                var win = window.open(url.replace('__id__', data[1]), '_blank');
-                //var win = window.open(url.replace('__id__', data[1]));
-                win.focus();
+                var datarow = tableMember.row('.selected').data();
+                $('#mem_rewardModalLabel').text('ดูรางวัลเชิดชูเกียรติที่เคยได้รับ');
+                $('#mem_rewardSubmit').html('ปิด');
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Details", "mem_reward")" + "/" + datarow[1],
+                    success: function (data) {
+                        $("#rec_no").val(data.rec_no);
+                        $("#reward_desc").val(data.reward_desc);
+                        $("#rec_no").prop('disabled', true);
+                        $("#reward_desc").prop('disabled', true);
+                        $("#mem_rewardSubmit").click(function (e) {
+                            e.preventDefault();
+                            $('#mem_rewardModal').modal('hide');
+                            $("#rec_no").prop('disabled', true);
+                            $("#reward_desc").prop('disabled', false);
+                        });
+                        $('#mem_rewardModal').modal({ backdrop: 'static', keyboard: false });
+                    }
+                });
             });
         });
+
     </script>
 }

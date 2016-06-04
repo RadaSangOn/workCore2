@@ -6,7 +6,7 @@ create table album (
    album_name           nvarchar(100)        not null,
    album_desc           nvarchar(200)        null,
    created_by			varchar(30)			 not null,
-   created_date			datetime 			 not null default CURRENT_TIMESTAMP,
+   album_date			datetime 			 not null default CURRENT_TIMESTAMP,
    x_status             char(1)              null,
    x_note               nvarchar(50)         null,
    x_log                nvarchar(500)        null,

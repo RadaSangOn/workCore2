@@ -21,7 +21,9 @@ namespace PPcore.Controllers
         // GET: albums
         public async Task<IActionResult> Index()
         {
-            return View(await _context.album.ToListAsync());
+            var album = _context.album;
+            ViewBag.countRecords = album.Count();
+            return View(await album.OrderByDescending(m => m.rowversion).ToListAsync());
         }
 
         // GET: albums/Details/5
@@ -48,19 +50,17 @@ namespace PPcore.Controllers
         }
 
         // POST: albums/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("album_code,album_desc,album_name,created_by,created_date,id,rowversion,x_log,x_note,x_status")] album album)
+        public async Task<IActionResult> Create([Bind("album_desc,album_name,created_by,album_date,rowversion")] album album)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(album);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(album);
+            album.x_status = "Y";
+            album.album_code = DateTime.Now.ToString("yyMMddhhmmss");
+            album.created_by = "Administrator";
+
+            _context.Add(album);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         // GET: albums/Edit/5

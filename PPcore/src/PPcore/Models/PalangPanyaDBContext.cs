@@ -24,7 +24,7 @@ namespace PPcore.Models
 
                 entity.Property(e => e.created_by).IsRequired().HasColumnType("varchar(30)");
 
-                entity.Property(e => e.created_date)
+                entity.Property(e => e.album_date)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("getdate()");
 

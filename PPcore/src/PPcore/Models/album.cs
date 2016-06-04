@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +14,6 @@ namespace PPcore.Models
         public string album_name { get; set; }
 
         [Display(Name = "คำอธิบาย")]
-        [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
         public string album_desc { get; set; }
 
         [Display(Name = "สร้างโดย")]
@@ -22,12 +22,15 @@ namespace PPcore.Models
 
         [Display(Name = "วันที่")]
         [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
-        public DateTime created_date { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM yyyy}")]
+        public DateTime album_date { get; set; }
 
         public string x_status { get; set; }
         public string x_note { get; set; }
         public string x_log { get; set; }
         public Guid id { get; set; }
+
+        [HiddenInput]
         public byte[] rowversion { get; set; }
     }
 }
