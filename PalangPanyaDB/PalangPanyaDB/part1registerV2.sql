@@ -1,4 +1,32 @@
 ﻿/*==============================================================*/
+/* Table: album                                                 */
+/*==============================================================*/
+create table album (
+   album_code           varchar(30)			 not null,
+   album_name           nvarchar(100)        not null,
+   album_desc           nvarchar(200)        null,
+   created_by			varchar(30)			 not null,
+   created_date			datetime 			 not null default CURRENT_TIMESTAMP,
+   x_status             char(1)              null,
+   x_note               nvarchar(50)         null,
+   x_log                nvarchar(500)        null,
+   id uniqueidentifier NOT NULL DEFAULT (newid()),
+   rowversion           timestamp            null,
+   constraint pk_album primary key (album_code)
+)
+go
+
+create table album_image (
+   album_code           varchar(30)          not null,
+   image_code           varchar(30)          not null,
+   x_status             char(1)              null,
+   x_note               nvarchar(50)         null,
+   x_log                nvarchar(500)        null,
+   constraint pk_album_image primary key (album_code,image_code)
+)
+go
+
+/*==============================================================*/
 /* Table: course_grade                                          */
 /*==============================================================*/
 create table course_grade (

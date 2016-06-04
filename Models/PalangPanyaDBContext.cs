@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PPcore.Models;
 
 namespace PPcore.Models
 {
@@ -23,31 +22,13 @@ namespace PPcore.Models
                 entity.Property(e => e.album_desc).HasColumnType("nvarchar(200)");
 
                 entity.Property(e => e.created_by).IsRequired().HasColumnType("varchar(30)");
-
-                entity.Property(e => e.created_date)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("getdate()");
+                entity.Property(e => e.created_date).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.rowversion)
                     .HasColumnType("timestamp")
                     .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
-
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
-
-                entity.Property(e => e.x_status).HasColumnType("char(1)");
-            });
-            modelBuilder.Entity<album_image>(entity =>
-            {
-                entity.HasKey(e => new { e.album_code, e.image_code })
-                    .HasName("pk_album_image");
-
-                entity.Property(e => e.album_code).HasColumnType("varchar(30)");
-
-                entity.Property(e => e.image_code).HasColumnType("varchar(30)");
 
                 entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
 
@@ -1003,6 +984,5 @@ namespace PPcore.Models
         public virtual DbSet<project_sponsor> project_sponsor { get; set; }
         public virtual DbSet<project_supporter> project_supporter { get; set; }
         public virtual DbSet<train_place> train_place { get; set; }
-        public DbSet<album> album { get; set; }
     }
 }
