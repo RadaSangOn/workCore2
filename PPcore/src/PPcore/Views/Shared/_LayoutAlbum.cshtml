@@ -32,37 +32,35 @@
                     else
                     {
                         <ul class="nav nav-tabs">
-                            <li>
-                                <a id="members" onclick="location.href='@Url.Action("Edit", "members", new {id=ViewBag.memberId})'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            <li class="active">
+                                <a href="#albums" data-toggle="tab">ข้อมูลกิจกรรม</a>
                             </li>
                             <li>
-                                <a id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
-                            </li>
-                            <li>
-                                <a id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:120px;background-color:#E6A21A;color:white;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
-                            </li>
-                            <li>
-                                <a id="mem_social" onclick="location.href='@Url.Action("Index", "mem_social", new {memberId=ViewBag.memberId})'" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
-                            </li>
-                            <li>
-                                <a id="mem_reward" onclick="location.href='@Url.Action("Index", "mem_reward", new {memberId=ViewBag.memberId})'" data-toggle="tab">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</a>
-                            </li>
-                            <li>
-                                <a id="mem_education" onclick="location.href='@Url.Action("Index", "mem_education", new {memberId=ViewBag.memberId})'" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลการศึกษา</div></a>
-                            </li>
-                            <li>
-                                <a id="mem_health" onclick="location.href='@Url.Action("Index", "mem_health", new {memberId=ViewBag.memberId})'" style="width:110px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลสุขภาพ</div></a>
-                            </li>
-                            <li>
-                                <a id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId})'" >ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
+                                <a href="#albums_image" data-toggle="tab" onclick="console.log('yes');">ภาพกิจกรรม</a>
                             </li>
                         </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="albums">
+                                <div style="background-color:#093D6A;height:8px;"></div>
+                                <br />
+                                <div>
+                                    @RenderBody()
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="albums_image">
+                                <div style="background-color:#093D6A;height:8px;"></div>
+                                <h4>Profile Tab</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
                     }
+
                     <div style="background-color:#093D6A;height:8px;"></div>
                     <br />
                     <div>
                         @RenderBody()
                     </div>
+
 </div>
 </div>
         </div>
@@ -133,69 +131,6 @@
 
         function dateDefault() {
             if ($("#album_date").val() == "") { $("#album_date").datepicker("setDate", new Date()); }
-        }
-
-
-        function setTextAAddress() {
-            var texta = '';
-            if ($('#place_name').val() != '') { texta += $('#place_name').val(); }
-            if ($('#building').val() != '') { texta += ' อาคาร ' + $('#building').val(); }
-            if ($('#floor').val() != '') { texta += ' ชั้น ' + $('#floor').val(); }
-            if ($('#room').val() != '') { texta += ' ห้อง ' + $('#room').val(); }
-            if ($('#village').val() != '') { texta += ' หมู่บ้าน ' + $('#village').val(); }
-            $('#texta_address').val(texta);
-        }
-        function setTextBAddress() {
-            var textb = '';
-            if ($('#h_no').val() != '') { textb += 'บ้านเลขที่ ' + $('#h_no').val(); }
-            if ($('#lot_no').val() != '') { textb += ' หมู่ที่ ' + $('#lot_no').val(); }
-            if ($('#street').val() != '') { textb += ' ถนน ' + $('#street').val(); }
-            if ($('#lane').val() != '') { textb += ' ตรอก/ซอย ' + $('#lane').val(); }
-            $('#textb_address').val(textb);
-        }
-        function setTextCAddress() {
-            var textc = '';
-            if ($('#subdistrict_code').val() != '') { textc += 'ตำบล/แขวง ' + $('#subdistrict_code').val(); }
-            if ($('#district_code').val() != '') { textc += ' อำเภอ ' + $('#district_code').val(); }
-            if ($('#province_code').val() != '') { textc += ' จังหวัด ' + $('#province_code').val(); }
-            if ($('#zip_code').val() != '') { textc += ' รหัสไปรษณีย์ ' + $('#zip_code').val(); }
-            if ($('#zone').val() != '') { textc += ' ภาค ' + $('#zone').val(); }
-            if ($('#country_code').val() != '') { textc += ' ประเทศ ' + $('#country_code').val(); }
-            $('#textc_address').val(textc);
-        }
-
-        function uploadMemPhoto() {
-            if ($('#fileMemPhoto')[0].files[0]) {
-                $('#waitMemPhoto').show();
-                var formData = new FormData();
-                formData.append("fileMemPhoto", $('#fileMemPhoto')[0].files[0]);
-                $.ajax({
-                    type: 'post', url: '@Url.Action("uploadMemPhoto", "members")',
-                    data: formData, processData: false, contentType: false,
-                }).done(function (resp) {
-                    var result = resp.result; var fileName = resp.fileName;
-                    $('#mem_photo').val(resp.fileName);
-                    $('#waitMemPhoto').hide(); $('#emptyMemPhoto').hide();
-                    $('#picMemPhotoSrc').attr('src', '/@ViewBag.images_upload/' + resp.fileName); $('#picMemPhoto').show();
-                });
-            }
-        }
-
-        function uploadCidCardPhoto() {
-            if ($('#fileCidCardPhoto')[0].files[0]) {
-                $('#waitCidCardPhoto').show();
-                var formData = new FormData();
-                formData.append("fileCidCardPhoto", $('#fileCidCardPhoto')[0].files[0]);
-                $.ajax({
-                    type: 'post', url: '@Url.Action("uploadCidCardPhoto", "members")',
-                    data: formData, processData: false, contentType: false,
-                }).done(function (resp) {
-                    var result = resp.result; var fileName = resp.fileName;
-                    $('#cid_card_pic').val(resp.fileName);
-                    $('#waitCidCardPhoto').hide(); $('#emptyCidCardPhoto').hide();
-                    $('#picCidCardPhotoSrc').attr('src', '/@ViewBag.images_upload/' + resp.fileName); $('#picCidCardPhoto').show();
-                });
-            }
         }
     </script>
 }

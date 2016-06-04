@@ -6,16 +6,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PPcore.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.Net.Http.Headers;
 
 namespace PPcore.Controllers
 {
     public class albumsController : Controller
     {
         private readonly PalangPanyaDBContext _context;
+        private IConfiguration _configuration;
+        private IHostingEnvironment _env;
 
-        public albumsController(PalangPanyaDBContext context)
+        private void prepareViewBag()
         {
-            _context = context;    
+            ViewBag.images_album = _configuration.GetSection("Paths").GetSection("images_album").Value;
+
+            ViewBag.sex = new SelectList(new[] { new { Value = "F", Text = "Female" }, new { Value = "M", Text = "Male" }, new { Value = "A", Text = "Alternative" } }, "Value", "Text", "F");
+            ViewBag.cid_type = new SelectList(new[] { new { Value = "C", Text = "???????????" }, new { Value = "H", Text = "????????????????" }, new { Value = "P", Text = "Passport" } }, "Value", "Text", "F");
+            ViewBag.marry_status = new SelectList(new[] { new { Value = "N", Text = "???" }, new { Value = "Y", Text = "????" } }, "Value", "Text");
+            ViewBag.zone = new SelectList(new[] { new { Value = "N", Text = "?????" }, new { Value = "E", Text = "????????" }, new { Value = "W", Text = "???????" }, new { Value = "S", Text = "???" }, new { Value = "L", Text = "??????????????????" } }, "Value", "Text");
+
+            ViewBag.mem_group = new SelectList(_context.mem_group.OrderBy(g => g.mem_group_code), "mem_group_code", "mem_group_desc");
+            ViewBag.mem_type = new SelectList(_context.mem_type.OrderBy(t => t.mem_group_code).OrderBy(t => t.mem_type_code), "mem_type_code", "mem_type_desc", "3  ");
+            ViewBag.mem_level = new SelectList(_context.mem_level.OrderBy(t => t.mlevel_code), "mlevel_code", "mlevel_desc", "3  ");
+            ViewBag.mem_status = new SelectList(_context.mem_status.OrderBy(s => s.mstatus_code), "mstatus_code", "mstatus_desc", "3  ");
+
+            ViewBag.ini_country = new SelectList(_context.ini_country.OrderBy(c => c.country_code), "country_code", "country_desc", "1");
+        }
+
+        public albumsController(PalangPanyaDBContext context, IConfiguration configuration, IHostingEnvironment env)
+        {
+            _context = context;
+            _configuration = configuration;
+            _env = env;
         }
 
         // GET: albums
@@ -46,16 +72,18 @@ namespace PPcore.Controllers
         // GET: albums/Create
         public IActionResult Create()
         {
+            ViewBag.FormAction = "Create";
+            ViewBag.album_code = DateTime.Now.ToString("yyMMddhhmmss");
             return View();
         }
 
         // POST: albums/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("album_desc,album_name,created_by,album_date,rowversion")] album album)
+        public async Task<IActionResult> Create([Bind("album_code,album_desc,album_name,created_by,album_date,rowversion")] album album)
         {
             album.x_status = "Y";
-            album.album_code = DateTime.Now.ToString("yyMMddhhmmss");
+            //album.album_code = DateTime.Now.ToString("yyMMddhhmmss");
             album.created_by = "Administrator";
 
             _context.Add(album);
@@ -71,7 +99,7 @@ namespace PPcore.Controllers
                 return NotFound();
             }
 
-            var album = await _context.album.SingleOrDefaultAsync(m => m.album_code == id);
+            var album = await _context.album.SingleOrDefaultAsync(m => m.id == new Guid(id));
             if (album == null)
             {
                 return NotFound();
@@ -145,6 +173,33 @@ namespace PPcore.Controllers
         private bool albumExists(string id)
         {
             return _context.album.Any(e => e.album_code == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadAlbumPhoto(ICollection<IFormFile> file, string albumCode)
+        {
+            var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
+            uploads = Path.Combine(uploads, albumCode);
+            Directory.CreateDirectory(uploads);
+
+            //var fileName = DateTime.Now.ToString("ddhhmmss") + "_";
+            var fileName = "";
+            foreach (var fi in file)
+            {
+                if (fi.Length > 0)
+                {
+                    fileName += ContentDispositionHeaderValue.Parse(fi.ContentDisposition).FileName.Trim('"');
+                    fileName = fileName.Substring(0, (fileName.Length <= 50 ? fileName.Length : 50)) + Path.GetExtension(fileName);
+                    using (var SourceStream = fi.OpenReadStream())
+                    {
+                        using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+                        {
+                            await SourceStream.CopyToAsync(fileStream);
+                        }
+                    }
+                }
+            }
+            return Json(new { result = "success", uploads = uploads, fileName = fileName });
         }
     }
 }

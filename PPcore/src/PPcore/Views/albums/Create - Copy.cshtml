@@ -5,10 +5,12 @@
 
 
 @{
-    ViewBag.Title = "แก้ไขข้อมูลกิจกรรม";
-    ViewBag.FormAction = "Edit";
+    ViewBag.Title = "เพิ่มข้อมูลกิจกรรม";
+    ViewBag.FormAction = "Create";
     ViewBag.ButtonUpperRightType = "submit";
-    ViewBag.panelBarMenu = "Edit";
+    ViewBag.panelBarMenu = "Create";
 }
 
 @{ await Html.RenderPartialAsync("ViewInput"); }
+
+

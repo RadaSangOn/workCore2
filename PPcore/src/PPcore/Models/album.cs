@@ -7,6 +7,7 @@ namespace PPcore.Models
 {
     public partial class album
     {
+        [HiddenInput]
         public string album_code { get; set; }
 
         [Display(Name = "ชื่ออัลบั้ม")]

@@ -364,3 +364,14 @@ table.panelTopBar tr td:hover {
 input[data-val-required] {
     border:1px solid #ff8383;
 }
+
+.dropzone {
+  min-height: 300px;
+  border-radius: 5px;
+  padding: 0px 0px;
+  margin-left:20px;margin-top:20px
+}
+
+.dropzone-background {
+
+}

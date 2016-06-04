@@ -13,8 +13,8 @@
                     <div class="pull-left" style="padding-top:5px;">ภาพกิจกรรม</div>
                     <div class="pull-right" style="margin-top:-2px;">
                         <button id="btnCreate" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "albums")'">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;สร้างอัลบั้ม&nbsp;&nbsp;&nbsp;</button>
-                        <button id="btnEdit" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "members")'">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</button>
-                        <button id="btnDetails" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "members")'">&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ดูข้อมูล</button>
+                        <button id="btnEdit" class="btn btn-default btn-panel-yellow" >&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;แก้ไข&nbsp;&nbsp;&nbsp;</button>
+                        <button id="btnDetails" class="btn btn-default btn-panel-yellow" >&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ดูข้อมูล</button>
                     </div>
                 </div>
 
@@ -59,15 +59,15 @@
         <!-- /.col-lg-8 -->
 
         <!-- Modal -->
-        <div class="modal fade modalForm1" id="mem_rewardModal" tabindex="-1" role="dialog" aria-labelledby="mem_rewardModalLabel" aria-hidden="true">
+        <div class="modal fade modalForm1" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="albumModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div id="mem_rewardModalHeader" class="modal-header">
+                    <div id="albumModalHeader" class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="vertical-align:middle;top:15px">&times;</button>
-                        <h4 class="modal-title" id="mem_rewardModalLabel" style="vertical-align:middle;"></h4>
+                        <h4 class="modal-title" id="malbumModalLabel" style="vertical-align:middle;"></h4>
                     </div>
                     <div class="modal-body container-fluid">
-                        <!-- { await Html.RenderPartialAsync("ViewInput", new mem_reward()); } -->
+                        @{ await Html.RenderPartialAsync("ViewInput", new album()); }
                     </div>
                     <!-- /.modal-content -->
                 </div>
@@ -91,61 +91,40 @@
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
 
+            $('#btnCreate').on('click', function () {
+                $('#albumModalLabel').text('เพิ่มประสบการณ์ในการช่วยเหลือสังคม');
+                $('#albumSubmit').html('บันทึก');
+                $("#rec_no").prop('disabled', false);
+                $("#social_desc").prop('disabled', false);
+                $("#albumSubmit").click(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        async:false,
+                        type: "POST",
+                        url: "@Url.Action("Create", "mem_social")",
+                        data: {
+                        memberId: "@ViewBag.memberId",
+                        rec_no: $("#rec_no").val(),
+                        social_desc: $("#social_desc").val()
+                        },
+                        success: function (data) {
+                        window.location.href = "@Url.Action("Index", "mem_social", new {memberId = ViewBag.memberId})";
+                        }
+                    });
+                });
+                $('#albumModal').modal({ backdrop: 'static', keyboard: false });
+            });
 
             $('#btnEdit').on('click', function () {
-                var datarow = tableMember.row('.selected').data();
-                $('#mem_rewardModalLabel').text('แก้ไขรางวัลเชิดชูเกียรติที่เคยได้รับ');
-                $('#mem_rewardSubmit').html('บันทึก');
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("Edit", "mem_reward")" + "/" + datarow[1],
-                    success: function (data) {
-                        $("#rec_no").val(data.rec_no);
-                        $("#reward_desc").val(data.reward_desc);
-                        $("#rec_no").prop('disabled', true);
-                        $("#reward_desc").prop('disabled', false);
-                        $("#mem_rewardSubmit").click(function (e) {
-                            e.preventDefault();
-                            $.ajax({
-                                type: "POST",
-                                data: {
-                                    id: datarow[1],
-                                    memberId: "@ViewBag.memberId",
-                                    rec_no: $("#rec_no").val(),
-                                    reward_desc: $("#reward_desc").val()
-                                },
-                                url: "@Url.Action("Edit", "mem_reward")",
-                                success: function (data) {
-                                    window.location.href = "@Url.Action("Index", "mem_reward", new {memberId = ViewBag.memberId})";
-                                }
-                            });
-                        });
-                        $('#mem_rewardModal').modal({ backdrop: 'static', keyboard: false });
-                    }
-                });
+                var data = tableMember.row('.selected').data();
+                var url = '@Url.Action("Edit", "albums", new { id = "__id__" })';
+                window.location.href = url.replace('__id__', data[1]);
             });
 
             $('#btnDetails').on('click', function () {
-                var datarow = tableMember.row('.selected').data();
-                $('#mem_rewardModalLabel').text('ดูรางวัลเชิดชูเกียรติที่เคยได้รับ');
-                $('#mem_rewardSubmit').html('ปิด');
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("Details", "mem_reward")" + "/" + datarow[1],
-                    success: function (data) {
-                        $("#rec_no").val(data.rec_no);
-                        $("#reward_desc").val(data.reward_desc);
-                        $("#rec_no").prop('disabled', true);
-                        $("#reward_desc").prop('disabled', true);
-                        $("#mem_rewardSubmit").click(function (e) {
-                            e.preventDefault();
-                            $('#mem_rewardModal').modal('hide');
-                            $("#rec_no").prop('disabled', true);
-                            $("#reward_desc").prop('disabled', false);
-                        });
-                        $('#mem_rewardModal').modal({ backdrop: 'static', keyboard: false });
-                    }
-                });
+                var data = tableMember.row('.selected').data();
+                var url = '@Url.Action("Details", "albums", new { id = "__id__" })';
+                window.location.href = url.replace('__id__', data[1]);
             });
         });
 
