@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace PPcore.Controllers
 {
@@ -19,23 +20,6 @@ namespace PPcore.Controllers
         private readonly PalangPanyaDBContext _context;
         private IConfiguration _configuration;
         private IHostingEnvironment _env;
-
-        private void prepareViewBag()
-        {
-            ViewBag.images_album = _configuration.GetSection("Paths").GetSection("images_album").Value;
-
-            ViewBag.sex = new SelectList(new[] { new { Value = "F", Text = "Female" }, new { Value = "M", Text = "Male" }, new { Value = "A", Text = "Alternative" } }, "Value", "Text", "F");
-            ViewBag.cid_type = new SelectList(new[] { new { Value = "C", Text = "???????????" }, new { Value = "H", Text = "????????????????" }, new { Value = "P", Text = "Passport" } }, "Value", "Text", "F");
-            ViewBag.marry_status = new SelectList(new[] { new { Value = "N", Text = "???" }, new { Value = "Y", Text = "????" } }, "Value", "Text");
-            ViewBag.zone = new SelectList(new[] { new { Value = "N", Text = "?????" }, new { Value = "E", Text = "????????" }, new { Value = "W", Text = "???????" }, new { Value = "S", Text = "???" }, new { Value = "L", Text = "??????????????????" } }, "Value", "Text");
-
-            ViewBag.mem_group = new SelectList(_context.mem_group.OrderBy(g => g.mem_group_code), "mem_group_code", "mem_group_desc");
-            ViewBag.mem_type = new SelectList(_context.mem_type.OrderBy(t => t.mem_group_code).OrderBy(t => t.mem_type_code), "mem_type_code", "mem_type_desc", "3  ");
-            ViewBag.mem_level = new SelectList(_context.mem_level.OrderBy(t => t.mlevel_code), "mlevel_code", "mlevel_desc", "3  ");
-            ViewBag.mem_status = new SelectList(_context.mem_status.OrderBy(s => s.mstatus_code), "mstatus_code", "mstatus_desc", "3  ");
-
-            ViewBag.ini_country = new SelectList(_context.ini_country.OrderBy(c => c.country_code), "country_code", "country_desc", "1");
-        }
 
         public albumsController(PalangPanyaDBContext context, IConfiguration configuration, IHostingEnvironment env)
         {
@@ -104,6 +88,8 @@ namespace PPcore.Controllers
             {
                 return NotFound();
             }
+            ViewBag.FormAction = "Edit";
+            ViewBag.album_code = album.album_code;
             return View(album);
         }
 
@@ -201,5 +187,30 @@ namespace PPcore.Controllers
             }
             return Json(new { result = "success", uploads = uploads, fileName = fileName });
         }
+
+        [HttpGet]
+        public IActionResult ListAlbumPhoto(string albumCode)
+        {
+            var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
+            uploads = Path.Combine(uploads, albumCode);
+            string[] fileEntries = Directory.GetFiles(uploads);
+            List<photo> p = new List<photo>();
+            foreach (string fileName in fileEntries)
+            {
+                p.Add(new photo { image_code = "", fileName = fileName });
+            }
+            string pjson = JsonConvert.SerializeObject(p);
+            //return Json(new { result = "success", uploads = uploads, photos = pjson });
+            return Json(pjson);
+        }
+    }
+
+
+
+
+    public class photo
+    {
+        public string image_code;
+        public string fileName;
     }
 }

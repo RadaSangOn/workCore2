@@ -91,30 +91,6 @@
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
 
-            $('#btnCreate').on('click', function () {
-                $('#albumModalLabel').text('เพิ่มประสบการณ์ในการช่วยเหลือสังคม');
-                $('#albumSubmit').html('บันทึก');
-                $("#rec_no").prop('disabled', false);
-                $("#social_desc").prop('disabled', false);
-                $("#albumSubmit").click(function (e) {
-                    e.preventDefault();
-                    $.ajax({
-                        async:false,
-                        type: "POST",
-                        url: "@Url.Action("Create", "mem_social")",
-                        data: {
-                        memberId: "@ViewBag.memberId",
-                        rec_no: $("#rec_no").val(),
-                        social_desc: $("#social_desc").val()
-                        },
-                        success: function (data) {
-                        window.location.href = "@Url.Action("Index", "mem_social", new {memberId = ViewBag.memberId})";
-                        }
-                    });
-                });
-                $('#albumModal').modal({ backdrop: 'static', keyboard: false });
-            });
-
             $('#btnEdit').on('click', function () {
                 var data = tableMember.row('.selected').data();
                 var url = '@Url.Action("Edit", "albums", new { id = "__id__" })';
