@@ -9,7 +9,7 @@
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input asp-for="rowversion" />
-                <input asp-for="album_code" />
+                <input asp-for="album_code" /><input asp-for="created_by" />
                 <div class="form-group">
                     <div class="row col-md-offset-1">
                         <label asp-for="album_name" class="control-label"></label>
@@ -48,8 +48,8 @@
     <div class="col-md-10">
         <form action="@Url.Action("UploadAlbumPhoto", "albums", new {albumCode=ViewBag.album_code})" class="dropzone">
             <div class="dz-message pull-left" data-dz-message>
-                <div style="background-color:lightgray;height:290px;width:100px;left:40px;top:25px;position:absolute;border-radius:5px;">
-                    <i class="fa fa-plus-square-o txt-color-blue" aria-hidden="true" style="position:relative;left:-2px;top:20px;font-size:50px;"></i>
+                <div style="background-color:#ffC000;height:290px;width:80px;left:40px;top:25px;position:absolute;border-radius:5px;">
+                    <i class="fa fa-plus-square-o txt-color-blue" aria-hidden="true" style="position:relative;left:-1px;top:20px;font-size:50px;"></i>
                 </div>
             </div>
             <div class="dz-message" data-dz-message>
@@ -64,8 +64,10 @@
 @if (ViewBag.FormAction == "Edit")
 {
     <div class="row">
-        <div class="col-md-10 col-md-offset-2">
-            <div id="albumPanel" class="well" style="margin-left:20px"></div>
+        <div class="col-md-12">
+            <div id="albumPanel" class="well" style="padding-left:10px;padding-top:0px;"> <!--  border: 1px solid #ccc;margin-left:20px;margin: 20px 0; -->
+
+            </div>
         </div>
     </div>
 }

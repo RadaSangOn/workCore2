@@ -33,7 +33,7 @@ namespace PPcore.Controllers
         {
             var album = _context.album;
             ViewBag.countRecords = album.Count();
-            return View(await album.OrderByDescending(m => m.rowversion).ToListAsync());
+            return View(await album.OrderByDescending(m => m.album_date).ToListAsync());
         }
 
         // GET: albums/Details/5
@@ -83,7 +83,7 @@ namespace PPcore.Controllers
                 return NotFound();
             }
 
-            var album = await _context.album.SingleOrDefaultAsync(m => m.id == new Guid(id));
+            var album = await _context.album.SingleOrDefaultAsync(m => m.id == new Guid(id)); 
             if (album == null)
             {
                 return NotFound();
@@ -98,34 +98,27 @@ namespace PPcore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("album_code,album_desc,album_name,created_by,created_date,id,rowversion,x_log,x_note,x_status")] album album)
+        public async Task<IActionResult> Edit(string id, [Bind("album_code,album_desc,album_name,created_by,album_date,id,rowversion,x_log,x_note,x_status")] album album)
         {
-            if (id != album.album_code)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(album);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!albumExists(album.album_code))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                _context.Update(album);
+                await _context.SaveChangesAsync();
             }
-            return View(album);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!albumExists(album.album_code))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Index");
+
         }
 
         // GET: albums/Delete/5
@@ -195,9 +188,12 @@ namespace PPcore.Controllers
             uploads = Path.Combine(uploads, albumCode);
             string[] fileEntries = Directory.GetFiles(uploads);
             List<photo> p = new List<photo>();
+            string fi;
             foreach (string fileName in fileEntries)
             {
-                p.Add(new photo { image_code = "", fileName = fileName });
+                fi = Path.Combine(albumCode,Path.GetFileName(fileName));
+                fi = Path.Combine(_configuration.GetSection("Paths").GetSection("images_album").Value, fi);
+                p.Add(new photo { image_code = "", fileName = fi });
             }
             string pjson = JsonConvert.SerializeObject(p);
             //return Json(new { result = "success", uploads = uploads, photos = pjson });

@@ -18,12 +18,13 @@ namespace PPcore.Models
         public string album_desc { get; set; }
 
         [Display(Name = "สร้างโดย")]
-        [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
+        [HiddenInput]
         public string created_by { get; set; }
 
         [Display(Name = "วันที่")]
         [Required(ErrorMessage = "กรุณากรอกข้อมูล")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM yyyy}")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMMM yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime album_date { get; set; }
 
         public string x_status { get; set; }

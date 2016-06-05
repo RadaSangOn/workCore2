@@ -42,12 +42,16 @@
 
 
 @section Scripts {
-    <script src="~/lib/bootstrap/js/modal.js"></script>
+
     <script>
         $(document).ready(function () {
+            //$.datepicker.regional['th'] = {
+            //    dateFormat: 'dd MM yy', changeMonth: true, changeYear: true, constrainInput: true,
+            //    yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
+            //};
             $.datepicker.regional['th'] = {
                 dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
-                yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
+                yearRange: "-100:+0", yearOffSet: 543, beforeShow: dateDefault
             };
             $.datepicker.setDefaults($.datepicker.regional['th']);
             $("#album_date").datepicker($.datepicker.regional["th"]);
@@ -65,13 +69,7 @@
                 success: function (resp) {
                     resp = JSON.parse(resp);
                     for (var i = 0; i < resp.length; i++) {
-                        console.log(resp[i].fileName + ' ' + resp[i].image_code);
-                        $('#albumPanel').append('<img src="' + resp[i].fileName + '" />');
-
-
-
-
-
+                        $('#albumPanel').append('<img style="height:200px;margin-top:10px;margin-right:10px;" class="img-thumbnail" src="/' + resp[i].fileName + '" />');
                     }
                 }
             });

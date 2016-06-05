@@ -39,7 +39,8 @@
                                         <td>@Html.DisplayFor(modelItem => item.album_name)</td>
                                         <td>@Html.DisplayFor(modelItem => item.id)</td>
                                         <td>@Html.DisplayFor(modelItem => item.album_desc)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.album_date)</td>
+                                        <!-- <td>@Html.DisplayFor(modelItem => item.album_date)</td> -->
+                                        <td>@String.Format("{0:dd MMMM yyyy}",item.album_date)</td>
                                         <td>@Html.DisplayFor(modelItem => item.created_by)</td>
                                     </tr>
                                 }
