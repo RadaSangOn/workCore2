@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace PPcore.Controllers
 {
@@ -44,12 +47,15 @@ namespace PPcore.Controllers
                 return NotFound();
             }
 
-            var album = await _context.album.SingleOrDefaultAsync(m => m.album_code == id);
+            var album = await _context.album.SingleOrDefaultAsync(m => m.id == new Guid(id));
             if (album == null)
             {
                 return NotFound();
             }
-
+            var appId = _configuration.GetSection("facebook").GetSection("AppId").Value;
+            ViewBag.FormAction = "Details";
+            ViewBag.album_code = album.album_code;
+            ViewBag.appId = appId;
             return View(album);
         }
 
@@ -162,13 +168,15 @@ namespace PPcore.Controllers
             Directory.CreateDirectory(uploads);
 
             //var fileName = DateTime.Now.ToString("ddhhmmss") + "_";
-            var fileName = "";
+            var fileName = ""; var fileExt = "";
             foreach (var fi in file)
             {
                 if (fi.Length > 0)
                 {
-                    fileName += ContentDispositionHeaderValue.Parse(fi.ContentDisposition).FileName.Trim('"');
-                    fileName = fileName.Substring(0, (fileName.Length <= 50 ? fileName.Length : 50)) + Path.GetExtension(fileName);
+                    fileName += Microsoft.Net.Http.Headers.ContentDispositionHeaderValue.Parse(fi.ContentDisposition).FileName.Trim('"');
+                    fileExt = Path.GetExtension(fileName);
+                    fileName = Path.GetFileNameWithoutExtension(fileName);
+                    fileName = fileName.Substring(0, (fileName.Length <= 50 ? fileName.Length : 50)) + fileExt;
                     using (var SourceStream = fi.OpenReadStream())
                     {
                         using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
@@ -184,20 +192,76 @@ namespace PPcore.Controllers
         [HttpGet]
         public IActionResult ListAlbumPhoto(string albumCode)
         {
+            album album = _context.album.SingleOrDefault(m => m.album_code == albumCode);
+            var abName = album.album_name;
+            var abDesc = album.album_desc;
+
             var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
             uploads = Path.Combine(uploads, albumCode);
             string[] fileEntries = Directory.GetFiles(uploads);
             List<photo> p = new List<photo>();
-            string fi;
+            string fiN; string fiP;
             foreach (string fileName in fileEntries)
             {
-                fi = Path.Combine(albumCode,Path.GetFileName(fileName));
-                fi = Path.Combine(_configuration.GetSection("Paths").GetSection("images_album").Value, fi);
-                p.Add(new photo { image_code = "", fileName = fi });
+                fiN = Path.GetFileName(fileName);
+                fiP = Path.Combine(albumCode,fiN);
+                fiP = Path.Combine(_configuration.GetSection("Paths").GetSection("images_album").Value, fiP);
+                p.Add(new photo { albumCode = albumCode, image_code = "", fileName = fiN, filePath = fiP, albumName = abName, albumDesc = abDesc });
             }
             string pjson = JsonConvert.SerializeObject(p);
             //return Json(new { result = "success", uploads = uploads, photos = pjson });
             return Json(pjson);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SharePhoto(string albumCode, string imageCode, string fileName)
+        {
+            var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
+            uploads = Path.Combine(uploads, albumCode);
+            uploads = Path.Combine(uploads, fileName);
+
+            var appId = _configuration.GetSection("facebook").GetSection("AppId").Value;
+            var appSecret = _configuration.GetSection("facebook").GetSection("AppSecret").Value;
+
+            string resp = "";
+            string resp2 = "";
+
+        /**
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri("http://graph.facebook.com/");
+            //client.DefaultRequestHeaders.Accept.Clear();
+            //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = await client.GetAsync("v2.6/me?fields=id,name");
+            if (response.IsSuccessStatusCode)
+            {
+                resp = await response.Content.ReadAsAsync<String>();
+            }
+        }
+        **/
+
+        //using (HttpResponseMessage response = await client.GetAsync("http://graph.facebook.com/v2.6/me?fields=id,name"))
+        //https://graph.facebook.com/endpoint?key=value&amp;access_token=app_id|app_secret
+
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.GetAsync("https://graph.facebook.com/oauth/access_token?client_id="+appId+"&client_secret="+appSecret+"&grant_type=client_credentials"))
+            using (HttpContent content = response.Content)
+            {
+                resp = await content.ReadAsStringAsync();
+            }
+            //JToken res = JObject.Parse(resp);
+            //FBUserID=126518931100981
+            //var token = res.SelectToken("access_token"); //using (HttpResponseMessage response = await client.GetAsync("https://graph.facebook.com/v2.6/me?fields=id,name&access_token=" + token))
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.GetAsync("https://graph.facebook.com/v2.6/me?" + resp))
+            using (HttpContent content = response.Content)
+            {
+                resp2 = await content.ReadAsStringAsync();
+            }
+
+            //return Json(new { result = "success" });
+            return Json(resp);
         }
     }
 
@@ -206,7 +270,12 @@ namespace PPcore.Controllers
 
     public class photo
     {
+        public string albumCode;
         public string image_code;
         public string fileName;
+        public string filePath;
+
+        public string albumName;
+        public string albumDesc;
     }
 }

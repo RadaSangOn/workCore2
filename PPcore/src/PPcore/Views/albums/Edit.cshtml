@@ -69,7 +69,7 @@
                 success: function (resp) {
                     resp = JSON.parse(resp);
                     for (var i = 0; i < resp.length; i++) {
-                        $('#albumPanel').append('<img style="height:200px;margin-top:10px;margin-right:10px;" class="img-thumbnail" src="/' + resp[i].fileName + '" />');
+                        $('#albumPanel').append('<img style="height:200px;margin-top:10px;margin-right:10px;" class="img-thumbnail" src="/' + resp[i].filePath + '" />');
                     }
                 }
             });
