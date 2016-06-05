@@ -158,21 +158,21 @@
 
 @section Scripts {
 <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '@ViewBag.appId',
-                xfbml: true,
-                version: 'v2.6'
-            });
-        };
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+  window.fbAsyncInit = function() {
+    FB.init({
+        appId: '@ViewBag.appId',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
 
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 </script>
 
     <script>
@@ -300,40 +300,61 @@
                     alert("POST SUCCESSFUL");
                 }
             });
+
+
+            //Post to album
+            FB.login(function (resp) {
+                FB.api('/me/albums', 'post', { name: albumName }, function (response) {
+                    console.log('albumid ' + response.id);
+                    FB.api('/' + response.id + '/photos', 'post', {
+                        message: 'photo description',
+                        url: 'https://cdn.theatlantic.com/assets/media/img/photo/2015/11/images-from-the-2016-sony-world-pho/s01_130921474920553591/main_1500.jpg'
+                    }, function (response) {
+
+                        if (!response || response.error) {
+                            console.log('Error occured');
+                        } else {
+                            console.log('Post ID: ' + response.id);
+                        }
+
+                    });
+                });
+            }, { scope: 'publish_actions,user_photos' });
+
+
         }
 
         function sharePhoto(albumCode, imageCode, fileName, albumName) {
-            FB.getLoginStatus(function (response) {
-                if (response.status === 'connected') {
-                    FB.login(function (resp) {
-                        FB.api('/me/albums', 'post', { name: albumName }, function (response) {
-                            console.log('albumid ' + response.id);
-                            FB.api('/' + response.id + '/photos', 'post', {
-                                message: 'photo description',
-                                url: 'https://cdn.theatlantic.com/assets/media/img/photo/2015/11/images-from-the-2016-sony-world-pho/s01_130921474920553591/main_1500.jpg'
-                            }, function (response) {
-
-                                if (!response || response.error) {
-                                    console.log('Error occured');
-                                } else {
-                                    console.log('Post ID: ' + response.id);
-                                }
-
-                            });
+            if (!window.accessToken) {
+                FB.login(function (resp) {
+                    if (resp.authResponse) {
+                        var access_token = FB.getAuthResponse()['accessToken'];
+                        console.log('Access Token = ' + access_token);
+                        window.accessToken = access_token;
+                        FB.api('/me', function (response) {
+                            console.log('Good to see you, ' + response.name + '.');
                         });
-                    }, { scope: 'publish_actions,user_photos' });
-                } else if (response.status === 'not_authorized') {
-                    // The person is logged into Facebook, but not your app.
-                    console.log('Please log into this app.');
-                } else {
-                    // The person is not logged into Facebook, so we're not sure if
-                    // they are logged into this app or not.
-                    console.log('Please log into Facebook.');
-                }
-            });
+                        sharePhotoAjax(access_token, albumCode, imageCode, fileName);
+                    } else {
+                        console.log('User cancelled login or did not fully authorize.');
+                    }
+                }, { scope: 'publish_actions,user_photos' });
+            } else {
+                sharePhotoAjax(window.accessToken, albumCode, imageCode, fileName);
+            }
 
         }
-
+        function sharePhotoAjax(access_token, albumCode, imageCode, fileName) {
+            $.ajax({
+                async:true,
+                type: "GET",
+                url: "@Url.Action("SharePhoto", "albums")" + "?access_token=" + access_token + "&albumCode=" + albumCode + "&imageCode=" + imageCode + "&fileName=" + fileName,
+                success: function (resp) {
+                    console.log(resp);
+                    resp = JSON.parse(resp);
+                }
+            });
+        }
 
         function testAPI() {
             console.log('Welcome!  Fetching your information.... ');

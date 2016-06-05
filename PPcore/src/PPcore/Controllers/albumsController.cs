@@ -214,7 +214,7 @@ namespace PPcore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SharePhoto(string albumCode, string imageCode, string fileName)
+        public async Task<IActionResult> SharePhotoOld(string albumCode, string imageCode, string fileName)
         {
             var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
             uploads = Path.Combine(uploads, albumCode);
@@ -262,6 +262,63 @@ namespace PPcore.Controllers
 
             //return Json(new { result = "success" });
             return Json(resp);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SharePhoto(string access_token, string albumCode, string imageCode, string fileName)
+        {
+            var uploads = Path.Combine(_env.WebRootPath, _configuration.GetSection("Paths").GetSection("images_album").Value);
+            uploads = Path.Combine(uploads, albumCode);
+            uploads = Path.Combine(uploads, fileName);
+
+            var appId = _configuration.GetSection("facebook").GetSection("AppId").Value;
+            var appSecret = _configuration.GetSection("facebook").GetSection("AppSecret").Value;
+
+            string resp = "";
+            string resp2 = "";
+            //using (HttpResponseMessage response = await client.GetAsync("http://graph.facebook.com/v2.6/me?fields=id,name"))
+            //https://graph.facebook.com/endpoint?key=value&amp;access_token=app_id|app_secret
+
+            //FBUserID=126518931100981
+            //var token = res.SelectToken("access_token"); //using (HttpResponseMessage response = await client.GetAsync("https://graph.facebook.com/v2.6/me?fields=id,name&access_token=" + token))
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage response = await client.GetAsync("https://graph.facebook.com/v2.6/me?access_token=" + access_token))
+            using (HttpContent content = response.Content)
+            {
+                resp = await content.ReadAsStringAsync();
+            }
+
+            //using (var client = new HttpClient())
+            //{
+            //    client.BaseAddress = new Uri("https://graph.facebook.com");
+           //     var content = new FormUrlEncodedContent(new[]
+             //   {
+              //      new KeyValuePair<string, string>("message", fileName),
+             //       //new KeyValuePair<string, string>("url", "https://cdn.theatlantic.com/assets/media/img/photo/2015/11/images-from-the-2016-sony-world-pho/s01_130921474920553591/main_1500.jpg")
+             //       new KeyValuePair<string, string>("source", "https://cdn.theatlantic.com/assets/media/img/photo/2015/11/images-from-the-2016-sony-world-pho/s01_130921474920553591/main_1500.jpg")
+             //   });
+            //    var result = client.PostAsync("/v2.6/me/photos?access_token=" + access_token, content).Result;
+            //    resp2 = result.Content.ReadAsStringAsync().Result;
+            //}
+
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://graph.facebook.com");
+                var form = new MultipartFormDataContent();
+                form.Add(new StringContent(fileName), "message");
+                var fileContent = new ByteArrayContent(System.IO.File.ReadAllBytes(uploads));
+                fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("source")
+                {
+                    FileName = fileName
+                };
+                form.Add(fileContent);
+                var result = client.PostAsync("/v2.6/me/photos?access_token=" + access_token, form).Result;
+                resp2 = result.Content.ReadAsStringAsync().Result;
+            }
+
+            //return Json(new { result = "success" });
+            return Json(resp2);
         }
     }
 
