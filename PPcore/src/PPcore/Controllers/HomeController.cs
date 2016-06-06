@@ -14,7 +14,12 @@ namespace PPcore.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "members");
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
         }
 
         public IActionResult Error()

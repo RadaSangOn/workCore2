@@ -23,7 +23,43 @@
     font-weight: normal;
     font-style: normal;
 }
-
+.txt-color-green {
+    color: #5cb85c;
+}
+.txt-color-green-light {
+    color: #79eb2a;
+}
+.txt-color-grey {
+    color: grey;
+}
+.txt-color-black {
+    color: #000;
+}
+.txt-color-blue {
+    color: #093D6A;
+}
+.txt-color-red {
+    color: red;
+}
+.bg-color-green { background-color: #5cb85c; }
+.bg-color-blue { background-color:#093D6A; }
+.bg-color-orange { background-color:#FFC000; }
+.box-login {
+    border-radius: 10px;
+    background-color:#093D6A;
+    color:white;
+    width:400px;
+    height:350px;
+    padding:30px 70px;
+}
+.box-register {
+    border-radius: 10px;
+    background-color:#093D6A;
+    color:white;
+    width:400px;
+    height:420px;
+    padding:30px 70px;
+}
 
 .navbar-green {
   background-color: #5cb85c;
@@ -286,28 +322,6 @@ background-color: #093D6A;
   border-color: #79eb2a;
 }
 
-.txt-color-green {
-    color: #5cb85c;
-}
-.txt-color-green-light {
-    color: #79eb2a;
-}
-.txt-color-grey {
-    color: grey;
-}
-.txt-color-black {
-    color: #000;
-}
-.txt-color-blue {
-    color: #093D6A;
-}
-.txt-color-red {
-    color: red;
-}
-
-.bg-color-green {
-    background-color:#5cb85c;
-}
 
 /** Top bar of member domain screen */
 table.panelTopBar {

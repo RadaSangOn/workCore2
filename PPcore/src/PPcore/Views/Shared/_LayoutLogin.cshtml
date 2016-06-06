@@ -35,71 +35,14 @@
         <link rel="stylesheet" href="~/css/dropzone.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
-    
+
     <!--[if lt IE 9]>
         <script src="~/lib/html5shiv/dist/html5shiv.min.js"></script>
         <script src="~/lib/respond/dest/respond.min.js"></script>
     <![endif]-->
 </head>
-<body>
+<body style="overflow:hidden">
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-static-top navbar-blue" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/Home"><img src="~/images/logo.jpg" style="height:inherit;margin-top:-15px;" /></a>
-            </div>
-
-            <ul class="nav navbar-top-links navbar-left">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-caret-down"></i>&nbsp;&nbsp;สมาชิก
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="@Url.Action("Create", "members")"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;เพิ่มสมาชิก</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Index", "Home")"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;ข้อมูลสมาชิก</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="dropdown-toggle" href="@Url.Action("Index", "albums")">
-                        <i class="fa fa-caret-down"></i>&nbsp;&nbsp;ภาพกิจกรรม
-                    </a>
-                </li>
-            </ul>
-
-
-
-
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>&nbsp;&nbsp;User : admin
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
-
-
-
-        </nav>
         @RenderBody()
     </div>
     <!-- /#wrapper -->
