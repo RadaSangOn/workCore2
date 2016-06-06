@@ -46,7 +46,7 @@
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-static-top navbar-blue" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/Home"><img src="~/images/logo.jpg" style="height:inherit;margin-top:-15px;" /></a>
+                <a class="navbar-brand" href="@Url.Action("Index", "members")"><img src="~/images/logo.jpg" style="height:inherit;margin-top:-15px;" /></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-left">
@@ -59,7 +59,7 @@
                             <a href="@Url.Action("Create", "members")"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;เพิ่มสมาชิก</a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Home")"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;ข้อมูลสมาชิก</a>
+                            <a href="@Url.Action("Index", "members")"><i class="fa fa-caret-right"></i>&nbsp;&nbsp;ข้อมูลสมาชิก</a>
                         </li>
                     </ul>
                 </li>
