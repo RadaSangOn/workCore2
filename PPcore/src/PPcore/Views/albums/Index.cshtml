@@ -14,6 +14,7 @@
                     <div class="pull-right" style="margin-top:-2px;">
                         <button id="btnCreate" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Create", "albums")'">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;สร้างอัลบั้ม&nbsp;&nbsp;&nbsp;</button>
                         <button id="btnEdit" class="btn btn-default btn-panel-yellow" >&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;แก้ไขอัลบั้ม&nbsp;&nbsp;&nbsp;</button>
+                        <button id="btnDelete" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-eraser" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ลบอัลบั้ม&nbsp;&nbsp;&nbsp;</button>
                         <button id="btnDetails" class="btn btn-default btn-panel-yellow" >&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ดูข้อมูลและแชร์ภาพ</button>
                     </div>
                 </div>
@@ -59,25 +60,35 @@
         </div>
         <!-- /.col-lg-8 -->
 
-        <!-- Modal -->
-        <div class="modal fade modalForm1" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="albumModalLabel" aria-hidden="true">
+        <!-- Modal Delete -->
+        <div class="modal fade modalForm1" id="albumDeleteModal" tabindex="-1" role="dialog" aria-labelledby="albumModalLabel" aria-hidden="true" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div id="albumModalHeader" class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="vertical-align:middle;top:15px">&times;</button>
-                        <h4 class="modal-title" id="malbumModalLabel" style="vertical-align:middle;"></h4>
+                        <h4 class="modal-title" id="albumModalLabel" style="vertical-align:middle;"></h4>
                     </div>
                     <div class="modal-body container-fluid">
-                        @{ await Html.RenderPartialAsync("ViewInput", new album()); }
+                        <div class="row">
+                            <div class="col-md-3"><div class="pull-right">@Html.DisplayNameFor(model => model.album_name)</div></div>
+                            <div id="albumDeleteName" class="col-md-9" style="color:orangered"></div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-3"><div class="pull-right">@Html.DisplayNameFor(model => model.album_date)</div></div>
+                            <div id="albumDeleteDate" class="col-md-9" style="color:orangered"></div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-4"><button id="btnDeleteConfirm" class="btn btn-danger pull-right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></div>
+                            <div class="col-md-4 col-md-offset-4">
+                                <button id="albumDeleteCancel" class="btn btn-default" data-dismiss="modal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal -->
-
-
-
         </div>
 
     </div>
@@ -96,6 +107,33 @@
                 var data = tableMember.row('.selected').data();
                 var url = '@Url.Action("Edit", "albums", new { id = "__id__" })';
                 window.location.href = url.replace('__id__', data[1]);
+            });
+
+            $('#btnDelete').on('click', function () {
+                var datarow = tableMember.row('.selected').data();
+                $('#albumModalLabel').text('ยืนยันการลบอัลบั้ม');
+                $('#albumDeleteName').text(datarow[0]);
+                $('#albumDeleteDate').text(datarow[3]);
+                $('#albumDeleteModal').modal({ backdrop: 'static', keyboard: false });
+            });
+            $('#btnDeleteConfirm').on('click', function () {
+                var datarow = tableMember.row('.selected').data();
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Delete", "albums")" + "/" + datarow[1],
+                    success: function (data) {
+                        $('#albumDeleteModal').modal('hide');
+                        window.location.href = '@Url.Action("Index", "albums")';
+                    },
+                    error: function (xhr, textStatus, error) {
+                        console.log(xhr.statusText);
+                        console.log(textStatus);
+                        console.log(error);
+                        $('#albumDeleteModal').modal('hide');
+                        window.location.href = '@Url.Action("Index", "albums")';
+                    }
+                  
+                });
             });
 
             $('#btnDetails').on('click', function () {

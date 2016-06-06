@@ -127,32 +127,15 @@ namespace PPcore.Controllers
 
         }
 
-        // GET: albums/Delete/5
+        // Get: albums/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var album = await _context.album.SingleOrDefaultAsync(m => m.album_code == id);
-            if (album == null)
-            {
-                return NotFound();
-            }
-
-            return View(album);
-        }
-
-        // POST: albums/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var album = await _context.album.SingleOrDefaultAsync(m => m.album_code == id);
+            var album = await _context.album.SingleOrDefaultAsync(m => m.id == new Guid(id));
+            //var albumImage = await _context.album_image
             _context.album.Remove(album);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return Json(new { result = "success" });
         }
 
         private bool albumExists(string id)
