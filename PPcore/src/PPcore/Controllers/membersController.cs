@@ -195,8 +195,8 @@ namespace PPcore.Controllers
                 pic_image c = _context.pic_image.Single(i => i.image_code == member.cid_card_pic);
                 ViewBag.cidCardPhoto = member.cid_card_pic + c.ref_doc_type;
             }
-            mem_train_record mtr = _context.mem_train_record.SingleOrDefault(mt => mt.member_code == member.member_code);
-            if (mtr == null) { ViewBag.mem_train_recordNotFound = true; } 
+            //mem_train_record mtr = _context.mem_train_record.SingleOrDefault(mt => mt.member_code == member.member_code);
+            //if (mtr == null) { ViewBag.mem_train_recordNotFound = true; } 
 
             ViewBag.memberId = id;
             prepareViewBag();
