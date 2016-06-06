@@ -59,6 +59,6 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="part1registerV2.sql" />
+    <Build Include="part1registerV4.sql" />
   </ItemGroup>
 </Project>
