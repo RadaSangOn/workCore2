@@ -127,7 +127,14 @@ background-color: #093D6A;
   background-color:#093D6A;color:white;
   cursor:pointer;
 }
-
+.nav-tabs > li.tabNoData > a,
+.nav-tabs > li.tabNoData > a:hover,
+.nav-tabs > li.tabNoData > a:focus {
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  background-color:#E6A21A;color:white;
+  cursor:pointer;
+}
 
 #page-wrapper {
     padding: 0 15px;
@@ -403,7 +410,9 @@ input[data-val-required] {
 .album-photo-wrapper a:-webkit-any-link {
   	text-decoration: none;
 }
-.fa-fbmod-square:before {
+
+
+.fa-fbmod-square:before {
   content: "\f082";
 }
 .btn-photo-blue {

@@ -356,6 +356,7 @@
             });
         }
         function shareAlbum(albumCode, albumName) {
+            $('#btnShare').prop('disabled', true);
             if (!window.accessToken) {
                 FB.login(function (resp) {
                     if (resp.authResponse) {
@@ -383,6 +384,13 @@
                 success: function (resp) {
                     console.log(resp);
                     resp = JSON.parse(resp);
+                    $('#btnShare').prop('disabled', false);
+                },
+                error: function(xhr, textStatus, error){
+                    $('#btnShare').prop('disabled', false);
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
                 }
             });
         }

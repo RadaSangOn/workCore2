@@ -39,7 +39,7 @@
                                 <a id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
                             </li>
                             <li>
-                                <a id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:120px;background-color:#E6A21A;color:white;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
+                                <a id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId})'" data-toggle="tab" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
                             </li>
                             <li>
                                 <a id="mem_social" onclick="location.href='@Url.Action("Index", "mem_social", new {memberId=ViewBag.memberId})'" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
@@ -88,6 +88,7 @@
                 $("#birthdate").datepicker($.datepicker.regional["th"]);
             }
 
+            if ("@ViewBag.mem_train_recordNotFound") { $('#mem_train_record').addClass('tabNoData'); }
 
             $('#mem_photo').hide(); $('#cid_card_pic').hide();
 
