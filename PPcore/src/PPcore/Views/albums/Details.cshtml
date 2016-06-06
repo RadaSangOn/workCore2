@@ -12,7 +12,7 @@
                 <div class="panel-heading">
                     <div class="pull-left" style="padding-top:5px;">ภาพกิจกรรม</div>
                     <div class="pull-right" style="margin-top:-2px;">
-                        <button id="btnShare" class="btn btn-default btn-panel-yellow" >&nbsp;<i class="fa fa-fbmod-square" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;แชร์ภาพ&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;
+                        <button id="btnShare" class="btn btn-default btn-panel-yellow" onclick="shareAlbum('@ViewBag.album_code', '@Model.album_name');">&nbsp;<i class="fa fa-fbmod-square" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;แชร์ภาพ&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;
                         <button id="btnBack" class="btn btn-default btn-panel-yellow" onclick="location.href='@Url.Action("Index", "albums")'">&nbsp;<i class="fa fa-reply" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;กลับ&nbsp;&nbsp;</button>
                     </div>
                 </div>
@@ -349,6 +349,37 @@
                 async:true,
                 type: "GET",
                 url: "@Url.Action("SharePhoto", "albums")" + "?access_token=" + access_token + "&albumCode=" + albumCode + "&imageCode=" + imageCode + "&fileName=" + fileName,
+                success: function (resp) {
+                    console.log(resp);
+                    resp = JSON.parse(resp);
+                }
+            });
+        }
+        function shareAlbum(albumCode, albumName) {
+            if (!window.accessToken) {
+                FB.login(function (resp) {
+                    if (resp.authResponse) {
+                        var access_token = FB.getAuthResponse()['accessToken'];
+                        console.log('Access Token = ' + access_token);
+                        window.accessToken = access_token;
+                        FB.api('/me', function (response) {
+                            console.log('Good to see you, ' + response.name + '.');
+                        });
+                        shareAlbumAjax(access_token, albumCode, albumName);
+                    } else {
+                        console.log('User cancelled login or did not fully authorize.');
+                    }
+                }, { scope: 'publish_actions,user_photos' });
+            } else {
+                shareAlbumAjax(window.accessToken, albumCode, albumName);
+            }
+
+        }
+        function shareAlbumAjax(access_token, albumCode, albumName) {
+            $.ajax({
+                async:true,
+                type: "GET",
+                url: "@Url.Action("ShareAlbum", "albums")" + "?access_token=" + access_token + "&albumCode=" + albumCode + "&albumName=" + albumName,
                 success: function (resp) {
                     console.log(resp);
                     resp = JSON.parse(resp);
