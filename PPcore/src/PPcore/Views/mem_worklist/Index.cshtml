@@ -5,8 +5,15 @@
 @model IEnumerable<PPcore.Models.mem_worklist>
 
 @{
-    ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
     ViewBag.ButtonUpperRightType = "hidden";
+    if (ViewBag.isViewOnly == 1)
+    {
+        ViewBag.panelBarMenu = "Details"; ViewBag.Title = "ดูรายละเอียดข้อมูลสมาชิก";
+    }
+    else
+    {
+        ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
+    }
 }
 
 <div class="panel panel-blue">
@@ -88,6 +95,11 @@
         $(document).ready(function () {
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
+            if ("@ViewBag.isViewOnly" == "1") {
+                $('#btnCreate').hide();
+                $('#btnEdit').hide();
+                $('#btnDetails').hide();
+            }
             $('#btnCreate').on('click', function () {
                 $('#mem_worklistModalLabel').text('เพิ่มข้อมูลสถานที่ทำงานและประวัติการทำงาน');
                 $('#mem_worklistSubmit').html('บันทึก');

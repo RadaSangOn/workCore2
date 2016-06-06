@@ -5,8 +5,13 @@
 @model IEnumerable<PPcore.ViewModels.mem_train_record.mem_train_recordViewModel>
 
 @{
-    ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
+
     ViewBag.ButtonUpperRightType = "hidden";
+    if (ViewBag.isViewOnly == 1) { 
+        ViewBag.panelBarMenu = "Details"; ViewBag.Title = "ดูรายละเอียดข้อมูลสมาชิก";
+    } else {
+        ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
+    }
 }
 
 <div class="panel panel-blue">
@@ -82,6 +87,12 @@
         $(document).ready(function () {
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
+            if ("@ViewBag.isViewOnly" == "1") {
+                $('#btnCreate').hide();
+                $('#btnEdit').hide();
+                $('#btnDetails').hide();
+            }
+
             $('#btnCreate').on('click', function () {
                 $('#mem_train_recordModalLabel').text('เพิ่มประวัติการอบรม');
                 $('#mem_train_recordSubmit').html('บันทึก');

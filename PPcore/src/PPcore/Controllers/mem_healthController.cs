@@ -16,13 +16,14 @@ namespace PPcore.Controllers
         }
 
         // GET: mem_health
-        public IActionResult Index(string memberId)
+        public IActionResult Index(string memberId, string v)
         {
             if (memberId == null)
             {
                 return NotFound();
             }
             ViewBag.memberId = memberId;
+            if (!String.IsNullOrEmpty(v)) { ViewBag.isViewOnly = 1; } else { ViewBag.isViewOnly = 0; }
             ViewBag.blood_group = new SelectList(new[]
                 {
                     new SelectListItem { Text = "O", Value = "O", Selected = true },

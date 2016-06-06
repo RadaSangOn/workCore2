@@ -17,7 +17,7 @@ namespace PPcore.Controllers
         }
 
         // GET: mem_site_visit
-        public IActionResult Index(string memberId)
+        public IActionResult Index(string memberId, string v)
         {
             List<ViewModels.mem_site_visit.mem_site_visitViewModel> mem_site_visitViewModels = new List<ViewModels.mem_site_visit.mem_site_visitViewModel>();
             var member = _context.member.Single(m => m.id == new Guid(memberId));
@@ -30,6 +30,7 @@ namespace PPcore.Controllers
                 mem_site_visitViewModels.Add(mem_site_visitViewModel);
             }
             ViewBag.memberId = memberId;
+            if (!String.IsNullOrEmpty(v)) { ViewBag.isViewOnly = 1; } else { ViewBag.isViewOnly = 0; }
             ViewBag.country_code = new SelectList(_context.ini_country, "country_code", "country_desc");
             return View(mem_site_visitViewModels);
         }

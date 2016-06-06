@@ -17,7 +17,7 @@ namespace PPcore.Controllers
         }
 
         // GET: mem_train_record
-        public IActionResult Index(string memberId)
+        public IActionResult Index(string memberId, string v)
         {
             List<ViewModels.mem_train_record.mem_train_recordViewModel> mem_train_recordViewModels = new List<ViewModels.mem_train_record.mem_train_recordViewModel>();
             var member = _context.member.Single(m => m.id == new Guid(memberId));
@@ -37,6 +37,7 @@ namespace PPcore.Controllers
                 mem_train_recordViewModels.Add(mem_train_recordViewModel);
             }
             ViewBag.memberId = memberId;
+            if (!String.IsNullOrEmpty(v)) { ViewBag.isViewOnly = 1; } else { ViewBag.isViewOnly = 0; }
             ViewBag.course_grade = new SelectList(_context.course_grade, "cgrade_code", "cgrade_desc");
             return View(mem_train_recordViewModels);
         }

@@ -16,13 +16,14 @@ namespace PPcore.Controllers
         }
 
         // GET: mem_worklist
-        public IActionResult Index(string memberId)
+        public IActionResult Index(string memberId, string v)
         {
             List<Models.mem_worklist> mem_worklists = new List<Models.mem_worklist>();
             var member = _context.member.Single(m => m.id == new Guid(memberId));
             mem_worklists = _context.mem_worklist.Where(m => m.member_code == member.member_code).OrderBy(m => m.rec_no).ToList();
 
             ViewBag.memberId = memberId;
+            if (!String.IsNullOrEmpty(v)) { ViewBag.isViewOnly = 1; } else { ViewBag.isViewOnly = 0; }
             return View(mem_worklists);
         }
 

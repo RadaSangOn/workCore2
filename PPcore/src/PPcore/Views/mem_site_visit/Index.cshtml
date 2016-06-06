@@ -5,8 +5,15 @@
 @model IEnumerable<PPcore.ViewModels.mem_site_visit.mem_site_visitViewModel>
 
 @{
-    ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
     ViewBag.ButtonUpperRightType = "hidden";
+    if (ViewBag.isViewOnly == 1)
+    {
+        ViewBag.panelBarMenu = "Details"; ViewBag.Title = "ดูรายละเอียดข้อมูลสมาชิก";
+    }
+    else
+    {
+        ViewBag.Title = "แก้ไข รายละเอียดข้อมูลสมาชิก";
+    }
 }
 
 <div class="panel panel-blue">
@@ -80,6 +87,11 @@
         $(document).ready(function () {
             var tableMember = setDataTablesSimple();
             tableMember.$('tr:first').click();
+            if ("@ViewBag.isViewOnly" == "1") {
+                $('#btnCreate').hide();
+                $('#btnEdit').hide();
+                $('#btnDetails').hide();
+            }
             $('#btnCreate').on('click', function () {
                 $('#mem_site_visitModalLabel').text('เพิ่มประวัติการดูงาน');
                 $('#mem_site_visitSubmit').html('บันทึก');

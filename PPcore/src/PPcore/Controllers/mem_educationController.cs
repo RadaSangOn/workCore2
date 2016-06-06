@@ -16,13 +16,14 @@ namespace PPcore.Controllers
         }
 
         // GET: mem_education
-        public IActionResult Index(string memberId)
+        public IActionResult Index(string memberId, string v)
         {
             List<Models.mem_education> mem_educations = new List<Models.mem_education>();
             var member = _context.member.Single(m => m.id == new Guid(memberId));
             mem_educations = _context.mem_education.Where(m => m.member_code == member.member_code).OrderBy(m => m.rec_no).ToList();
 
             ViewBag.memberId = memberId;
+            if (!String.IsNullOrEmpty(v)) { ViewBag.isViewOnly = 1; } else { ViewBag.isViewOnly = 0; }
             return View(mem_educations);
         }
 

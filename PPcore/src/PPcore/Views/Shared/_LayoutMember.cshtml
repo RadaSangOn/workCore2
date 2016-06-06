@@ -25,7 +25,28 @@
                     {
                         <ul class="nav nav-tabs">
                             <li>
-                                <a id="members" href="@Url.Action("Edit", "members", new {id=ViewBag.memberId})" data-toggle="tab" style="background-color:#093D6A;color:white;">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                                <a id="members" onclick="location.href='@Url.Action("Details", "members", new {id=ViewBag.memberId})'">ข้อมูลตามบัตรประชาชน<br />และข้อมูลการติดต่อกลับ</a>
+                            </li>
+                            <li>
+                                <a id="mem_train_record" onclick="location.href='@Url.Action("Index", "mem_train_record", new {memberId=ViewBag.memberId, v = 1})'" data-toggle="tab" style="width:140px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการฝึกอบรม</div></a>
+                            </li>
+                            <li>
+                                <a id="mem_site_visit" onclick="location.href='@Url.Action("Index", "mem_site_visit", new {memberId=ViewBag.memberId, v = 1})'" data-toggle="tab" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ประวัติการดูงาน</div></a>
+                            </li>
+                            <li>
+                                <a id="mem_social" onclick="location.href='@Url.Action("Index", "mem_social", new {memberId=ViewBag.memberId, v = 1})'" data-toggle="tab">ประสบการณ์ในการ<br />ช่วยเหลือสังคม</a>
+                            </li>
+                            <li>
+                                <a id="mem_reward" onclick="location.href='@Url.Action("Index", "mem_reward", new {memberId=ViewBag.memberId, v = 1})'" data-toggle="tab">รางวัลเชิดชูเกียรติ<br />ที่เคยได้รับ</a>
+                            </li>
+                            <li>
+                                <a id="mem_education" onclick="location.href='@Url.Action("Index", "mem_education", new {memberId=ViewBag.memberId, v = 1})'" style="width:120px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลการศึกษา</div></a>
+                            </li>
+                            <li>
+                                <a id="mem_health" onclick="location.href='@Url.Action("Index", "mem_health", new {memberId=ViewBag.memberId, v = 1})'" style="width:110px;">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ข้อมูลสุขภาพ</div></a>
+                            </li>
+                            <li>
+                                <a id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId, v = 1})'">ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
                             </li>
                         </ul>
                     }
@@ -118,6 +139,7 @@
                 if (!($('#birthdateButton').attr('disabled'))) {
                     $('#birthdateButton').attr({ 'disabled': 'disabled' });
                 }
+                $('#btnGoEdit').show();$('#btnSave').hide();
             }
 
             $('#btnPrint').on('click', function () {
