@@ -107,6 +107,55 @@
                 };
                 $.datepicker.setDefaults($.datepicker.regional['th']);
                 $("#birthdate").datepicker($.datepicker.regional["th"]);
+
+                $('#province_code').on('change', function () {
+                    $.ajax({
+                        type: 'get', url: '@Url.Action("SelectBy", "ini_district")' + '?provinceCode=' + $('#province_code').val(),
+                    }).done(function (resp) {
+                        if (resp == "") {
+                            $('#district_code').empty();
+                            $("#district_code").prop("disabled", true);
+                            $('#subdistrict_code').empty();
+                            $('#subdistrict_code').prop("disabled", true);
+                            $('#zip_code').val('');
+                        } else {
+                            $("#district_code").prop("disabled", false);
+                            $('#district_code').empty();
+                            $('#district_code').append(resp);
+                            $('#district_code').trigger("change");
+                        }
+                    });
+                });
+                $('#district_code').on('change', function () {
+                    $.ajax({
+                        type: 'get', url: '@Url.Action("SelectBy", "ini_subdistrict")' + '?districtCode=' + $('#district_code').val(),
+                    }).done(function (resp) {
+                        if (resp == "") {
+                            $('#subdistrict_code').empty();
+                            $('#subdistrict_code').prop("disabled", true);
+                            $('#zip_code').val('');
+                        } else {
+                            $("#subdistrict_code").prop("disabled", false);
+                            $('#subdistrict_code').empty();
+                            $('#subdistrict_code').append(resp);
+                            $('#subdistrict_code').trigger("change");
+                        }
+                    });
+                });
+                $('#subdistrict_code').on('change', function () {
+                    $.ajax({
+                        type: 'get', url: '@Url.Action("SelectBy", "ini_list_zip")' + '?subdistrictCode=' + $('#subdistrict_code').val(),
+                    }).done(function (resp) {
+                        if (resp == "") {
+                            $('#zip_code').val('');
+                        } else {
+                            $('#zip_code').val(resp);
+                        }
+                    });
+                });
+                
+
+                $('#province_code').trigger("change"); $('#district_code').trigger("change"); $('#subdistrict_code').trigger("change"); $('#zip_code').trigger("change");
             }
 
             //setTabColor();
@@ -151,6 +200,10 @@
 
                 //window.open(url.replace('__id__', '@ViewBag.memberId'), "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
             });
+
+
+
+
         });
         $('#birthdateButton').click(function () {
             $('#birthdate').datepicker("show");

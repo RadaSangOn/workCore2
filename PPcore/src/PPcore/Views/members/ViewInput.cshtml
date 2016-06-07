@@ -87,7 +87,7 @@
                                 <div class="col-md-2 text-right"><label asp-for="birthdate" class="control-label"></label></div>
                                 <div class="col-md-4">
                                     <div class="input-group">
-                                        <input asp-for="birthdate" class="form-control" onchange="setAge()" readonly >
+                                        <input asp-for="birthdate" class="form-control" onchange="setAge()" readonly style="background-color:white">
                                         <span class="input-group-btn">
                                             <button id="birthdateButton" class="btn btn-default" type="button" style="border-color:orangered;">
                                                 <i class="fa fa-calendar"></i>
@@ -212,7 +212,7 @@
                                 <div class="row">
                                     <div class="col-md-2 text-right"><label asp-for="province_code" class="control-label"></label></div>
                                     <div class="col-md-4">
-                                        <select asp-for="province_code" class="form-control"></select>
+                                        <select asp-for="province_code" class="form-control" asp-items="@ViewBag.ini_province"></select>
                                     </div>
 
                                     <div class="col-md-2 text-right"><label asp-for="district_code" class="control-label"></label></div>
@@ -230,7 +230,8 @@
 
                                     <div class="col-md-2 text-right"><label asp-for="zip_code" class="control-label"></label></div>
                                     <div class="col-md-4">
-                                        <select asp-for="zip_code" class="form-control"></select>
+                                        <input asp-for="zip_code" class="form-control" />
+                                        <span asp-validation-for="zip_code" class="text-danger" />
                                     </div>
                                 </div>
                             </div>
