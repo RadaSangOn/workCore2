@@ -99,7 +99,7 @@
         $(document).ready(function () {
             var nn = '@ViewContext.RouteData.Values["controller"]';
             $('#' + nn).parent().addClass('active');
-
+            
             if (nn == "members") {
                 $.datepicker.regional['th'] = {
                     dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
@@ -109,7 +109,7 @@
                 $("#birthdate").datepicker($.datepicker.regional["th"]);
             }
 
-            if ("@ViewBag.mem_train_recordNotFound") { $('#mem_train_record').addClass('tabNoData'); }
+            //if ("@ViewBag.mem_train_recordNotFound" == "0") { $('#mem_train_record').addClass('tabNoData'); }
 
             $('#mem_photo').hide(); $('#cid_card_pic').hide();
 
