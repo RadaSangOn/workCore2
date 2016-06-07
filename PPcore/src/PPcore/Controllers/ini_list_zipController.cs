@@ -31,8 +31,12 @@ namespace PPcore.Controllers
             {
                 return NotFound();
             }
-            else {
-                selectOptions += zips[0].zip_code;
+            else
+            {
+                foreach (var zip in zips)
+                {
+                    selectOptions = zip.zip_code;
+                }
             }
             /**
             foreach (var zip in zips)

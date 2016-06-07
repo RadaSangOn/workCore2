@@ -12,6 +12,7 @@ using PPcore.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace PPcore.Controllers
 {
@@ -199,10 +200,6 @@ namespace PPcore.Controllers
                 ViewBag.cidCardPhoto = member.cid_card_pic + c.ref_doc_type;
             }
 
-            //mem_train_record mtr = _context.mem_train_record.FirstOrDefault(mt => mt.member_code == member.member_code);
-            //if (mtr == null) { ViewBag.mem_train_recordNotFound = true; }
-            //ViewBag.TabNoData = Json(new { memberId = id, new {a = "a"} }).ToString();
-
             ViewBag.memberId = id;
             prepareViewBag();
             clearImageUpload();
@@ -327,5 +324,48 @@ namespace PPcore.Controllers
                 System.Diagnostics.Debug.WriteLine(dir);
             }
         }
+
+        [HttpGet]
+        public IActionResult ListTabNoData(string memberId)
+        {
+            var memberCode = _context.member.SingleOrDefault(m => m.id == new Guid(memberId)).member_code;
+            List<tab> t = new List<tab>();
+            if (_context.mem_train_record.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_train_record", value = 0 });
+            }
+            if (_context.mem_site_visit.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_site_visit", value = 0 });
+            }
+            if (_context.mem_social.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_social", value = 0 });
+            }
+            if (_context.mem_reward.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_reward", value = 0 });
+            }
+            if (_context.mem_education.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_education", value = 0 });
+            }
+            if (_context.mem_health.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_health", value = 0 });
+            }
+            if (_context.mem_worklist.Where(mt => mt.member_code == memberCode).Count() == 0)
+            {
+                t.Add(new tab { name = "mem_worklist", value = 0 });
+            }
+            return Json(JsonConvert.SerializeObject(t));
+        }
+    }
+
+    //Json for javascript to check which tabs are no data; see ListTabNoData action in this class
+    public class tab
+    {
+        public string name;
+        public int value;
     }
 }
