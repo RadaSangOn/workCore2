@@ -496,9 +496,7 @@ namespace PPcoreDBPrepare.Models
 
                 entity.Property(e => e.grow_area).HasColumnType("decimal");
 
-                entity.Property(e => e.id)
-                    .IsRequired()
-                    .HasColumnType("binary(99)");
+                entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.rowversion)
                     .HasColumnType("timestamp")
@@ -509,18 +507,6 @@ namespace PPcoreDBPrepare.Models
                 entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
-
-                entity.HasOne(d => d.member_codeNavigation)
-                    .WithMany(p => p.mem_product)
-                    .HasForeignKey(d => d.member_code)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("fk_mem_prod");
-
-                entity.HasOne(d => d.product_codeNavigation)
-                    .WithMany(p => p.mem_product)
-                    .HasForeignKey(d => d.product_code)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("fk_prod_mem");
             });
 
             modelBuilder.Entity<mem_reward>(entity =>
@@ -828,9 +814,7 @@ namespace PPcoreDBPrepare.Models
 
                 entity.Property(e => e.product_code).HasColumnType("char(3)");
 
-                entity.Property(e => e.id)
-                    .IsRequired()
-                    .HasColumnType("binary(99)");
+                entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.product_desc)
                     .IsRequired()
@@ -849,11 +833,6 @@ namespace PPcoreDBPrepare.Models
                 entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
-
-                entity.HasOne(d => d.product_)
-                    .WithMany(p => p.product)
-                    .HasForeignKey(d => new { d.product_type_code, d.product_group_code })
-                    .HasConstraintName("fk_prodt_type");
             });
 
             modelBuilder.Entity<product_group>(entity =>
@@ -863,9 +842,7 @@ namespace PPcoreDBPrepare.Models
 
                 entity.Property(e => e.product_group_code).HasColumnType("char(3)");
 
-                entity.Property(e => e.id)
-                    .IsRequired()
-                    .HasColumnType("binary(99)");
+                entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.product_group_desc)
                     .IsRequired()
@@ -891,9 +868,7 @@ namespace PPcoreDBPrepare.Models
 
                 entity.Property(e => e.product_group_code).HasColumnType("char(3)");
 
-                entity.Property(e => e.id)
-                    .IsRequired()
-                    .HasColumnType("binary(99)");
+                entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.product_type_desc)
                     .IsRequired()
@@ -908,12 +883,6 @@ namespace PPcoreDBPrepare.Models
                 entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
-
-                entity.HasOne(d => d.product_group_codeNavigation)
-                    .WithMany(p => p.product_type)
-                    .HasForeignKey(d => d.product_group_code)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("fk_product_group");
             });
 
             modelBuilder.Entity<project>(entity =>

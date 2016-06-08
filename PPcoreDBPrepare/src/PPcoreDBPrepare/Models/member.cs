@@ -5,11 +5,6 @@ namespace PPcoreDBPrepare.Models
 {
     public partial class member
     {
-        public member()
-        {
-            mem_product = new HashSet<mem_product>();
-        }
-
         public string member_code { get; set; }
         public string fname { get; set; }
         public string lname { get; set; }
@@ -58,7 +53,5 @@ namespace PPcoreDBPrepare.Models
         public string x_log { get; set; }
         public Guid id { get; set; }
         public byte[] rowversion { get; set; }
-
-        public virtual ICollection<mem_product> mem_product { get; set; }
     }
 }
