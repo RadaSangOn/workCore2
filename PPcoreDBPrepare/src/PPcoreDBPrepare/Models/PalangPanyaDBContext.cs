@@ -1,144 +1,52 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using PPcore.Models;
 
-namespace PPcore.Models
+namespace PPcoreDBPrepare.Models
 {
     public partial class PalangPanyaDBContext : DbContext
     {
-        public PalangPanyaDBContext(DbContextOptions<PalangPanyaDBContext> options)
-            : base(options)
-        { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\ProjectsV13;Database=PalangPanyaDB;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<product>(entity =>
-            {
-                entity.HasKey(e => e.product_code)
-                    .HasName("pk_product");
-
-                entity.Property(e => e.product_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.product_desc)
-                    .IsRequired().HasColumnType("nvarchar(100)");
-
-                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.product_type_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.rowversion)
-                    .HasColumnType("timestamp")
-                    .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
-
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
-
-                entity.Property(e => e.x_status).HasColumnType("char(1)");
-            });
-
-            modelBuilder.Entity<product_group>(entity =>
-            {
-                entity.HasKey(e => e.product_group_code)
-                    .HasName("pk_product_group");
-
-                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.product_group_desc)
-                    .IsRequired().HasColumnType("nvarchar(100)");
-
-                entity.Property(e => e.rowversion)
-                    .HasColumnType("timestamp")
-                    .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
-
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
-
-                entity.Property(e => e.x_status).HasColumnType("char(1)");
-            });
-
-            modelBuilder.Entity<product_type>(entity =>
-            {
-                entity.HasKey(e => new { e.product_type_code, e.product_group_code })
-                    .HasName("pk_product_type");
-
-                entity.Property(e => e.product_type_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.product_type_desc)
-                    .IsRequired().HasColumnType("nvarchar(100)");
-
-                entity.Property(e => e.rowversion)
-                    .HasColumnType("timestamp")
-                    .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
-
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
-
-                entity.Property(e => e.x_status).HasColumnType("char(1)");
-            });
-
-            modelBuilder.Entity<mem_product>(entity =>
-            {
-                entity.HasKey(e => new { e.product_code, e.member_code })
-                    .HasName("pk_mem_product");
-
-                entity.Property(e => e.product_code).HasColumnType("char(3)");
-
-                entity.Property(e => e.member_code).HasColumnType("varchar(30)");
-
-                entity.Property(e => e.grow_area).HasColumnType("decimal");
-
-                entity.Property(e => e.id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.rowversion)
-                    .HasColumnType("timestamp")
-                    .ValueGeneratedOnAddOrUpdate();
-
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
-
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
-
-                entity.Property(e => e.x_status).HasColumnType("char(1)");
-            });
-
             modelBuilder.Entity<album>(entity =>
             {
-                entity.HasKey(e => e.album_code).HasName("pk_album");
+                entity.HasKey(e => e.album_code)
+                    .HasName("pk_album");
 
                 entity.Property(e => e.album_code).HasColumnType("varchar(30)");
-
-                entity.Property(e => e.album_name).IsRequired().HasColumnType("nvarchar(100)");
-
-                entity.Property(e => e.album_desc).HasColumnType("nvarchar(200)");
-
-                entity.Property(e => e.created_by).IsRequired().HasColumnType("varchar(30)");
 
                 entity.Property(e => e.album_date)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("getdate()");
 
+                entity.Property(e => e.album_desc).HasMaxLength(200);
+
+                entity.Property(e => e.album_name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.created_by)
+                    .IsRequired()
+                    .HasColumnType("varchar(30)");
+
                 entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.rowversion)
                     .HasColumnType("timestamp")
                     .ValueGeneratedOnAddOrUpdate();
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
             });
+
             modelBuilder.Entity<album_image>(entity =>
             {
                 entity.HasKey(e => new { e.album_code, e.image_code })
@@ -148,9 +56,9 @@ namespace PPcore.Models
 
                 entity.Property(e => e.image_code).HasColumnType("varchar(30)");
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
             });
@@ -577,6 +485,44 @@ namespace PPcore.Models
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
             });
 
+            modelBuilder.Entity<mem_product>(entity =>
+            {
+                entity.HasKey(e => new { e.product_code, e.member_code })
+                    .HasName("pk_mem_product");
+
+                entity.Property(e => e.product_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.member_code).HasColumnType("varchar(30)");
+
+                entity.Property(e => e.grow_area).HasColumnType("decimal");
+
+                entity.Property(e => e.id)
+                    .IsRequired()
+                    .HasColumnType("binary(99)");
+
+                entity.Property(e => e.rowversion)
+                    .HasColumnType("timestamp")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.x_log).HasMaxLength(500);
+
+                entity.Property(e => e.x_note).HasMaxLength(50);
+
+                entity.Property(e => e.x_status).HasColumnType("char(1)");
+
+                entity.HasOne(d => d.member_codeNavigation)
+                    .WithMany(p => p.mem_product)
+                    .HasForeignKey(d => d.member_code)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("fk_mem_prod");
+
+                entity.HasOne(d => d.product_codeNavigation)
+                    .WithMany(p => p.mem_product)
+                    .HasForeignKey(d => d.product_code)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("fk_prod_mem");
+            });
+
             modelBuilder.Entity<mem_reward>(entity =>
             {
                 entity.HasKey(e => new { e.rec_no, e.member_code })
@@ -686,9 +632,9 @@ namespace PPcore.Models
 
                 entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
             });
@@ -762,7 +708,7 @@ namespace PPcore.Models
 
                 entity.Property(e => e.birthdate).HasColumnType("datetime");
 
-                entity.Property(e => e.building).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.building).HasMaxLength(50);
 
                 entity.Property(e => e.cid_card).HasColumnType("varchar(30)");
 
@@ -772,27 +718,27 @@ namespace PPcore.Models
 
                 entity.Property(e => e.district_code).HasColumnType("char(8)");
 
-                entity.Property(e => e.email).HasColumnType("nvarchar(100)");
+                entity.Property(e => e.email).HasMaxLength(100);
 
-                entity.Property(e => e.fax).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.fax).HasMaxLength(50);
 
-                entity.Property(e => e.floor).HasColumnType("nvarchar(20)");
+                entity.Property(e => e.floor).HasMaxLength(20);
 
-                entity.Property(e => e.fname).HasColumnType("nvarchar(100)");
+                entity.Property(e => e.fname).HasMaxLength(100);
 
-                entity.Property(e => e.h_no).HasColumnType("nvarchar(20)");
+                entity.Property(e => e.h_no).HasMaxLength(20);
 
                 entity.Property(e => e.id).HasDefaultValueSql("newid()");
 
-                entity.Property(e => e.lane).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.lane).HasMaxLength(50);
 
                 entity.Property(e => e.latitude).HasColumnType("decimal");
 
-                entity.Property(e => e.lname).HasColumnType("nvarchar(100)");
+                entity.Property(e => e.lname).HasMaxLength(100);
 
                 entity.Property(e => e.longitude).HasColumnType("decimal");
 
-                entity.Property(e => e.lot_no).HasColumnType("nvarchar(20)");
+                entity.Property(e => e.lot_no).HasMaxLength(20);
 
                 entity.Property(e => e.marry_status).HasColumnType("char(1)");
 
@@ -804,53 +750,53 @@ namespace PPcore.Models
 
                 entity.Property(e => e.mlevel_code).HasColumnType("char(3)");
 
-                entity.Property(e => e.mobile).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.mobile).HasMaxLength(50);
 
                 entity.Property(e => e.mstatus_code).HasColumnType("char(3)");
 
-                entity.Property(e => e.nationality).HasColumnType("nvarchar(30)");
+                entity.Property(e => e.nationality).HasMaxLength(30);
 
                 entity.Property(e => e.parent_code).HasColumnType("varchar(30)");
 
-                entity.Property(e => e.place_name).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.place_name).HasMaxLength(50);
 
                 entity.Property(e => e.province_code).HasColumnType("char(8)");
 
-                entity.Property(e => e.religion).HasColumnType("nvarchar(30)");
+                entity.Property(e => e.religion).HasMaxLength(30);
 
-                entity.Property(e => e.room).HasColumnType("nvarchar(20)");
+                entity.Property(e => e.room).HasMaxLength(20);
 
                 entity.Property(e => e.rowversion)
                     .HasColumnType("timestamp")
-                    .ValueGeneratedOnAddOrUpdate().IsConcurrencyToken();
+                    .ValueGeneratedOnAddOrUpdate();
 
                 entity.Property(e => e.sex).HasColumnType("char(1)");
 
-                entity.Property(e => e.social_app_data).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.social_app_data).HasMaxLength(500);
 
-                entity.Property(e => e.street).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.street).HasMaxLength(50);
 
                 entity.Property(e => e.subdistrict_code).HasColumnType("char(8)");
 
-                entity.Property(e => e.tel).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.tel).HasMaxLength(50);
 
-                entity.Property(e => e.texta_address).HasColumnType("nvarchar(200)");
+                entity.Property(e => e.texta_address).HasMaxLength(200);
 
-                entity.Property(e => e.textb_address).HasColumnType("nvarchar(200)");
+                entity.Property(e => e.textb_address).HasMaxLength(200);
 
-                entity.Property(e => e.textc_address).HasColumnType("nvarchar(200)");
+                entity.Property(e => e.textc_address).HasMaxLength(200);
 
-                entity.Property(e => e.village).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.village).HasMaxLength(50);
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
 
                 entity.Property(e => e.zip_code).HasColumnType("char(5)");
 
-                entity.Property(e => e.zone).HasColumnType("nvarchar(30)");
+                entity.Property(e => e.zone).HasMaxLength(30);
             });
 
             modelBuilder.Entity<pic_image>(entity =>
@@ -862,17 +808,112 @@ namespace PPcore.Models
 
                 entity.Property(e => e.image_file).HasColumnType("text");
 
-                entity.Property(e => e.image_name).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.image_name).HasMaxLength(50);
 
                 entity.Property(e => e.ref_doc_code).HasColumnType("varchar(30)");
 
                 entity.Property(e => e.ref_doc_type).HasColumnType("varchar(30)");
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
+            });
+
+            modelBuilder.Entity<product>(entity =>
+            {
+                entity.HasKey(e => e.product_code)
+                    .HasName("pk_product");
+
+                entity.Property(e => e.product_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.id)
+                    .IsRequired()
+                    .HasColumnType("binary(99)");
+
+                entity.Property(e => e.product_desc)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.product_type_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.rowversion)
+                    .HasColumnType("timestamp")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.x_log).HasMaxLength(500);
+
+                entity.Property(e => e.x_note).HasMaxLength(50);
+
+                entity.Property(e => e.x_status).HasColumnType("char(1)");
+
+                entity.HasOne(d => d.product_)
+                    .WithMany(p => p.product)
+                    .HasForeignKey(d => new { d.product_type_code, d.product_group_code })
+                    .HasConstraintName("fk_prodt_type");
+            });
+
+            modelBuilder.Entity<product_group>(entity =>
+            {
+                entity.HasKey(e => e.product_group_code)
+                    .HasName("pk_product_group");
+
+                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.id)
+                    .IsRequired()
+                    .HasColumnType("binary(99)");
+
+                entity.Property(e => e.product_group_desc)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.rowversion)
+                    .HasColumnType("timestamp")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.x_log).HasMaxLength(500);
+
+                entity.Property(e => e.x_note).HasMaxLength(50);
+
+                entity.Property(e => e.x_status).HasColumnType("char(1)");
+            });
+
+            modelBuilder.Entity<product_type>(entity =>
+            {
+                entity.HasKey(e => new { e.product_type_code, e.product_group_code })
+                    .HasName("pk_product_type");
+
+                entity.Property(e => e.product_type_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.product_group_code).HasColumnType("char(3)");
+
+                entity.Property(e => e.id)
+                    .IsRequired()
+                    .HasColumnType("binary(99)");
+
+                entity.Property(e => e.product_type_desc)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.rowversion)
+                    .HasColumnType("timestamp")
+                    .ValueGeneratedOnAddOrUpdate();
+
+                entity.Property(e => e.x_log).HasMaxLength(500);
+
+                entity.Property(e => e.x_note).HasMaxLength(50);
+
+                entity.Property(e => e.x_status).HasColumnType("char(1)");
+
+                entity.HasOne(d => d.product_group_codeNavigation)
+                    .WithMany(p => p.product_type)
+                    .HasForeignKey(d => d.product_group_code)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("fk_product_group");
             });
 
             modelBuilder.Entity<project>(entity =>
@@ -926,7 +967,7 @@ namespace PPcore.Models
 
                 entity.Property(e => e.course_desc)
                     .IsRequired()
-                    .HasColumnType("nvarchar(100)");
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.course_end).HasColumnType("datetime");
 
@@ -936,15 +977,15 @@ namespace PPcore.Models
 
                 entity.Property(e => e.project_code).HasColumnType("varchar(30)");
 
-                entity.Property(e => e.project_manager).HasColumnType("nvarchar(100)");
+                entity.Property(e => e.project_manager).HasMaxLength(100);
 
                 entity.Property(e => e.ref_doc).HasColumnType("varchar(30)");
 
                 entity.Property(e => e.support_head).HasColumnType("char(10)");
 
-                entity.Property(e => e.x_log).HasColumnType("nvarchar(500)");
+                entity.Property(e => e.x_log).HasMaxLength(500);
 
-                entity.Property(e => e.x_note).HasColumnType("nvarchar(50)");
+                entity.Property(e => e.x_note).HasMaxLength(50);
 
                 entity.Property(e => e.x_status).HasColumnType("char(1)");
             });
@@ -1070,6 +1111,8 @@ namespace PPcore.Models
             });
         }
 
+        public virtual DbSet<album> album { get; set; }
+        public virtual DbSet<album_image> album_image { get; set; }
         public virtual DbSet<course_grade> course_grade { get; set; }
         public virtual DbSet<course_group> course_group { get; set; }
         public virtual DbSet<course_instructor> course_instructor { get; set; }
@@ -1086,6 +1129,7 @@ namespace PPcore.Models
         public virtual DbSet<mem_group> mem_group { get; set; }
         public virtual DbSet<mem_health> mem_health { get; set; }
         public virtual DbSet<mem_level> mem_level { get; set; }
+        public virtual DbSet<mem_product> mem_product { get; set; }
         public virtual DbSet<mem_reward> mem_reward { get; set; }
         public virtual DbSet<mem_site_visit> mem_site_visit { get; set; }
         public virtual DbSet<mem_social> mem_social { get; set; }
@@ -1095,6 +1139,9 @@ namespace PPcore.Models
         public virtual DbSet<mem_worklist> mem_worklist { get; set; }
         public virtual DbSet<member> member { get; set; }
         public virtual DbSet<pic_image> pic_image { get; set; }
+        public virtual DbSet<product> product { get; set; }
+        public virtual DbSet<product_group> product_group { get; set; }
+        public virtual DbSet<product_type> product_type { get; set; }
         public virtual DbSet<project> project { get; set; }
         public virtual DbSet<project_course> project_course { get; set; }
         public virtual DbSet<project_course_register> project_course_register { get; set; }
@@ -1102,7 +1149,5 @@ namespace PPcore.Models
         public virtual DbSet<project_sponsor> project_sponsor { get; set; }
         public virtual DbSet<project_supporter> project_supporter { get; set; }
         public virtual DbSet<train_place> train_place { get; set; }
-        public DbSet<album> album { get; set; }
-        public DbSet<mem_product> mem_product { get; set; }
     }
 }

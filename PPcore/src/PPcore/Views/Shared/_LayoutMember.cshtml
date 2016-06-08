@@ -77,11 +77,14 @@
                             <li>
                                 <a id="mem_worklist" onclick="location.href='@Url.Action("Index", "mem_worklist", new {memberId=ViewBag.memberId})'" >ข้อมูลสถานที่ทำงาน<br />และประวัติการทำงาน</a>
                             </li>
+                            <li>
+                                <a id="mem_product" onclick="mem_productView('@ViewBag.memberId');" style="width:140px;" data-toggle="tab">&nbsp;<br /><br /><div style="position:absolute;top:20px;">ผลิตผลในครัวเรือน</div></a>
+                            </li>
                         </ul>
                     }
                     <div style="background-color:#093D6A;height:8px;"></div>
                     <br />
-                    <div>
+                    <div id="renderBody">
                         @RenderBody()
                     </div>
 </div>
@@ -304,6 +307,15 @@
                 }, 300);
             }, 300);
         }
+
+        function mem_productView(memberId) {
+            $.ajax({
+                type: 'get', url: '@Url.Action("Index", "mem_product")'+ '?memberId = ' + memberId,
+            }).done(function (resp) {
+                $('#renderBody').html(resp);
+            });
+        }
+
         function setTabColor() {
             $.ajax({
                 type: 'get', url: '@Url.Action("ListTabNoData", "members", new { memberId = @ViewBag.memberId })',

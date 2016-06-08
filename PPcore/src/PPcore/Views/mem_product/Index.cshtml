@@ -1,0 +1,128 @@
+@{
+    Layout = "";
+}
+@model IEnumerable<PPcore.Models.mem_product>
+
+<div class="panel panel-blue">
+    <div class="panel-heading">
+        <div class="pull-left" style="padding-top:5px;">?????????????????</div>
+        <div class="pull-right" style="margin-top:-2px;">
+            <div id="btnCreate" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;&nbsp;?????&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div id="btnEdit" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;?????&nbsp;&nbsp;</div>
+            <div id="btnDetails" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;????????</div>
+        </div>
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        <div class="dataTable_wrapper" style="padding-right:10px;">
+            <table class="table table-striped table-bordered table-hover" id="dataTablesSimple">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.rec_no)</th>
+                        <th>@Html.DisplayNameFor(model => model.id)</th>
+                        <th>@Html.DisplayNameFor(model => model.social_desc)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var countOrder = 0;}
+                    @foreach (var item in Model)
+                    {
+                        countOrder++;
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.rec_no)</td>
+                            <td>@Html.DisplayFor(modelItem => item.id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.social_desc)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+        <!-- Modal -->
+        <div class="modal fade modalForm1" id="mem_socialModal" tabindex="-1" role="dialog" aria-labelledby="mem_socialModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="mem_socialModalHeader" class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="vertical-align:middle;top:15px">&times;</button>
+                        <h4 class="modal-title" id="mem_socialModalLabel" style="vertical-align:middle;"></h4>
+                    </div>
+                    <div class="modal-body container-fluid">
+                        @{ await Html.RenderPartialAsync("ViewInput", new mem_social()); }
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.grow_area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rowversion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.x_log)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.x_note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.x_status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.grow_area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.rowversion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.x_log)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.x_note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.x_status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

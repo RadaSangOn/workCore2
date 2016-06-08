@@ -7,7 +7,7 @@ create table product_group (
    x_status             char(1)              null,
    x_note               nvarchar(50)         null,
    x_log                nvarchar(500)        null,
-   id                   binary(99)           not null,
+   id uniqueidentifier NOT NULL DEFAULT (newid()),
    rowversion           timestamp            null,
    constraint pk_product_group primary key (product_group_code)
 )
@@ -23,7 +23,7 @@ create table product_type (
    x_status             char(1)              null,
    x_note               nvarchar(50)         null,
    x_log                nvarchar(500)        null,
-   id                   binary(99)           not null,
+   id uniqueidentifier NOT NULL DEFAULT (newid()),
    rowversion           timestamp            null,
    constraint pk_product_type primary key (product_type_code, product_group_code)
 )
@@ -37,10 +37,11 @@ create table product (
    product_type_code    char(3)              null,
    product_group_code   char(3)              null,
    product_desc         nvarchar(100)        not null,
+   rec_no               int                  not null,
    x_status             char(1)              null,
    x_note               nvarchar(50)         null,
    x_log                nvarchar(500)        null,
-   id                   binary(99)           not null,
+   id uniqueidentifier NOT NULL DEFAULT (newid()),
    rowversion           timestamp            null,
    constraint pk_product primary key (product_code)
 )
@@ -53,10 +54,11 @@ create table mem_product (
    member_code          varchar(30)          not null,
    product_code         char(3)              not null,
    grow_area            decimal(7,2)         null,
+   rec_no               int                  not null,
    x_status             char(1)              null,
    x_note               nvarchar(50)         null,
    x_log                nvarchar(500)        null,
-   id                   binary(99)           not null,
+   id uniqueidentifier NOT NULL DEFAULT (newid()),
    rowversion           timestamp            null,
    constraint pk_mem_product primary key (product_code, member_code)
 )
