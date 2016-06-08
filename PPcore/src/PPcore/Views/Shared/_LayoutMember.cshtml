@@ -316,6 +316,26 @@
                 setDataTablesSimple();
             });
         }
+        function mem_productCreate(memberId) {
+            $.ajax({
+                type: 'get', url: '@Url.Action("ListProduct", "mem_product")' + '?memberId=' + memberId,
+            }).done(function (resp) {
+                $('#mem_productModalLabel').text('เลือกผลิตผลที่ต้องการเพิ่ม');
+                $('#mem_productModalRenderBody').html(resp);
+                setDataTables($('#dataTablesListProduct'));
+                $('#mem_productModal').modal({ backdrop: 'static', keyboard: false });
+            });
+            
+        }
+        function mem_productCreateSelect(memberId) {
+            $.ajax({
+                type: 'get', url: '@Url.Action("ListProduct", "mem_product")' + '?memberId=' + memberId,
+            }).done(function (resp) {
+                $('#mem_productModalRenderBody').html(resp);
+                setDataTablesSimple();
+            });
+
+        }
 
         function setTabColor() {
             $.ajax({

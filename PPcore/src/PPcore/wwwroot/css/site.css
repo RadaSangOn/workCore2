@@ -376,7 +376,10 @@ table.panelTopBar tr td:hover {
   background-color: #FFC000;
   border-color: #FFC000;
 }
-
+.dataTablesMod {
+border-collapse: collapse;
+width: 100% !important;
+}
 
 .modalForm1 {
     top:25%;

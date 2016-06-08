@@ -15,7 +15,7 @@
     <!-- /.panel-heading -->
     <div class="panel-body">
         <div class="dataTable_wrapper" style="padding-right:10px;">
-            <table class="table table-striped table-bordered table-hover dataTablesMod" id="dataTablesSimple">
+            <table class="table table-striped table-bordered table-hover dataTablesMod" id="dataTablesListProduct">
                 <thead>
                     <tr>
                         <th class="text-center" style="width:50px;">@Html.DisplayNameFor(model => model.mem_product.rec_no)</th>
@@ -69,7 +69,7 @@
                 <div id="mem_productModalRenderBody">
 
                 </div>
-                <div id="btnTest" class="btn btn-default btn-panel-yellow" onclick="mem_productCreateSelect('@ViewBag.memberId')">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</div>
+                <div id="btnTest" class="btn btn-default btn-panel-yellow" onclick="mem_productSelect('@ViewBag.memberId')">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</div>
 
                 <!-- { await Html.RenderPartialAsync("ViewInput", new mem_social()); } -->
             </div>
