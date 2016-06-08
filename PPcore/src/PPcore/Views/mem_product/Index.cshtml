@@ -82,3 +82,33 @@
     </div>
 </div>
 <!-- /Modal -->
+
+<!-- Modal -->
+<div id="mem_productCreateModal" class="modal fade modalForm1" tabindex="-1" role="dialog" aria-labelledby="mem_productModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+
+
+
+            <div id="mem_socialModalHeader" class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="vertical-align:middle;top:15px">&times;</button>
+                <h4 id="mem_productModalLabel" class="modal-title" style="vertical-align:middle;"></h4>
+            </div>
+            <div class="modal-body container-fluid">
+                <div id="mem_productModalRenderBody">
+
+                </div>
+                <div id="btnTest" class="btn btn-default btn-panel-yellow" onclick="mem_productCreateSelect('@ViewBag.memberId')">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</div>
+
+                <!-- { await Html.RenderPartialAsync("ViewInput", new mem_social()); } -->
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+<!-- /Modal -->

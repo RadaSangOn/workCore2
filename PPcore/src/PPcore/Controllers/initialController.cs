@@ -37,6 +37,7 @@ namespace PPcore.Controllers
             _context.Database.ExecuteSqlCommand("INSERT INTO mem_status (mstatus_code,mstatus_desc,id,x_status) VALUES ('2',N'หมดอายุ',newid(),'Y')");
             _context.Database.ExecuteSqlCommand("INSERT INTO mem_status (mstatus_code,mstatus_desc,id,x_status) VALUES ('3',N'กำลังดำเนินการต่ออายุ',newid(),'Y')");
 
+            /**
 
             _context.Database.ExecuteSqlCommand("INSERT[ini_country] ([country_code], [country_desc], [area_part], [x_status], [x_note], [x_log], [id]) VALUES(66, N'ไทย', NULL, NULL, NULL, NULL, N'865c24b0-0b06-4b4a-a9cf-aeb6053a456e')");
             _context.Database.ExecuteSqlCommand("INSERT[ini_country] ([country_code], [country_desc], [area_part], [x_status], [x_note], [x_log], [id]) VALUES(84, N'เวียดนาม', NULL, NULL, NULL, NULL, N'746e95e2-abc3-4d39-99e7-61e319524b1d')");
@@ -801,7 +802,7 @@ _context.Database.ExecuteSqlCommand("INSERT[ini_list_zip] ([province_code], [cou
 
 
 
-
+    **/
 
 
 
@@ -811,7 +812,7 @@ _context.Database.ExecuteSqlCommand("INSERT[ini_list_zip] ([province_code], [cou
 
         }
 
-    private void insertSampleData()
+        private void insertSampleData()
         {
             string guid; string memberCode;
             guid = Guid.NewGuid().ToString();

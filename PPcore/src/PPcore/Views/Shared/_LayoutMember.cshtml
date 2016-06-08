@@ -328,12 +328,7 @@
             
         }
         function mem_productCreateSelect(memberId) {
-            $.ajax({
-                type: 'get', url: '@Url.Action("ListProduct", "mem_product")' + '?memberId=' + memberId,
-            }).done(function (resp) {
-                $('#mem_productModalRenderBody').html(resp);
-                setDataTablesSimple();
-            });
+            $('#mem_productCreateModal').modal({ backdrop: 'static', keyboard: false });
 
         }
 
