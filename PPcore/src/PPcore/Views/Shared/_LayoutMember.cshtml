@@ -118,6 +118,20 @@
                     setProvinceData();
                 } else if (act == "Details") {
                     setTabColor();
+                    $('input').each(function () {
+                        if (!($(this).attr('disabled'))) {
+                            $(this).attr({ 'disabled': 'disabled' });
+                        }
+                    });
+                    $('select').each(function () {
+                        if (!($(this).attr('disabled'))) {
+                            $(this).attr({ 'disabled': 'disabled' });
+                        }
+                    });
+                    if (!($('#birthdateButton').attr('disabled'))) {
+                        $('#birthdateButton').attr({ 'disabled': 'disabled' });
+                    }
+                    $('#btnGoEdit').show(); $('#btnSave').hide();
                 }
             } else {
                 setTabColor();
@@ -137,22 +151,6 @@
                     $('#picCidCardPhotoSrc').attr('src', '/@ViewBag.images_member/@ViewBag.cidCardPhoto'); $('#picCidCardPhoto').show();
                 }
                 $('#btnPrint').show();
-            }
-            if (act == "Details") {
-                $('input').each(function () {
-                    if (!($(this).attr('disabled'))) {
-                        $(this).attr({ 'disabled': 'disabled' });
-                    }
-                });
-                $('select').each(function () {
-                    if (!($(this).attr('disabled'))) {
-                        $(this).attr({ 'disabled': 'disabled' });
-                    }
-                });
-                if (!($('#birthdateButton').attr('disabled'))) {
-                    $('#birthdateButton').attr({ 'disabled': 'disabled' });
-                }
-                $('#btnGoEdit').show(); $('#btnSave').hide();
             }
 
             $('#btnPrint').on('click', function () {
