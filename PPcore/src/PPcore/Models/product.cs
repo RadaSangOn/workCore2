@@ -9,6 +9,7 @@ namespace PPcore.Models
         public string product_code { get; set; }
         public string product_type_code { get; set; }
         public string product_group_code { get; set; }
+        [Display(Name = "ผลิตผล")]
         public string product_desc { get; set; }
         [Display(Name = "ลำดับที่")]
         public int rec_no { get; set; }

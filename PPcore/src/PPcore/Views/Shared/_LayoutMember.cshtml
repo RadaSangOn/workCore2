@@ -310,9 +310,10 @@
 
         function mem_productView(memberId) {
             $.ajax({
-                type: 'get', url: '@Url.Action("Index", "mem_product")'+ '?memberId = ' + memberId,
+                type: 'get', url: '@Url.Action("Index", "mem_product")'+'?memberId=' + memberId,
             }).done(function (resp) {
                 $('#renderBody').html(resp);
+                setDataTablesSimple();
             });
         }
 

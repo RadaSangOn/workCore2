@@ -1,15 +1,15 @@
-@{
+﻿@{
     Layout = "";
 }
-@model IEnumerable<PPcore.Models.mem_product>
+@model IEnumerable<PPcore.ViewModels.mem_product.mem_productViewModel>
 
 <div class="panel panel-blue">
     <div class="panel-heading">
-        <div class="pull-left" style="padding-top:5px;">?????????????????</div>
+        <div class="pull-left" style="padding-top:5px;">แสดงข้อมูลทั้งหมด</div>
         <div class="pull-right" style="margin-top:-2px;">
-            <div id="btnCreate" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;&nbsp;?????&nbsp;&nbsp;&nbsp;&nbsp;</div>
-            <div id="btnEdit" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;?????&nbsp;&nbsp;</div>
-            <div id="btnDetails" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;????????</div>
+            <div id="btnCreate" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;&nbsp;เพิ่ม&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div id="btnEdit" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-pencil-square-o" aria-hidden="true" style="color:white;"></i>&nbsp;แก้ไข&nbsp;&nbsp;</div>
+            <div id="btnDetails" class="btn btn-default btn-panel-yellow">&nbsp;<i class="fa fa-file-text" aria-hidden="true" style="color:white;"></i>&nbsp;&nbsp;ดูข้อมูล</div>
         </div>
     </div>
     <!-- /.panel-heading -->
@@ -18,20 +18,22 @@
             <table class="table table-striped table-bordered table-hover" id="dataTablesSimple">
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.rec_no)</th>
-                        <th>@Html.DisplayNameFor(model => model.id)</th>
-                        <th>@Html.DisplayNameFor(model => model.social_desc)</th>
+                        <th>@Html.DisplayNameFor(model => model.mem_product.rec_no)</th>
+                        <th>@Html.DisplayNameFor(model => model.mem_product.id)</th>
+                        <th>@Html.DisplayNameFor(model => model.product_group_desc)</th>
+                        <th>@Html.DisplayNameFor(model => model.product_type_desc)</th>
+                        <th>@Html.DisplayNameFor(model => model.product.product_desc)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @{ var countOrder = 0;}
                     @foreach (var item in Model)
                     {
-                        countOrder++;
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.rec_no)</td>
-                            <td>@Html.DisplayFor(modelItem => item.id)</td>
-                            <td>@Html.DisplayFor(modelItem => item.social_desc)</td>
+                            <td>@Html.DisplayFor(modelItem => item.mem_product.rec_no)</td>
+                            <td>@Html.DisplayFor(modelItem => item.mem_product.id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.product_group_desc)</td>
+                            <td>@Html.DisplayFor(modelItem => item.product_type_desc)</td>
+                            <td>@Html.DisplayFor(modelItem => item.product.product_desc)</td>
                         </tr>
                     }
                 </tbody>
@@ -43,7 +45,7 @@
 
 
         <!-- Modal -->
-        <div class="modal fade modalForm1" id="mem_socialModal" tabindex="-1" role="dialog" aria-labelledby="mem_socialModalLabel" aria-hidden="true">
+        <div id="mem_productModal" class="modal fade modalForm1" tabindex="-1" role="dialog" aria-labelledby="mem_productModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div id="mem_socialModalHeader" class="modal-header">
@@ -51,7 +53,7 @@
                         <h4 class="modal-title" id="mem_socialModalLabel" style="vertical-align:middle;"></h4>
                     </div>
                     <div class="modal-body container-fluid">
-                        @{ await Html.RenderPartialAsync("ViewInput", new mem_social()); }
+                        <!-- { await Html.RenderPartialAsync("ViewInput", new mem_social()); } -->
                     </div>
                     <!-- /.modal-content -->
                 </div>
@@ -65,64 +67,3 @@
 
     </div>
 </div>
-
-
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.grow_area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.rowversion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.x_log)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.x_note)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.x_status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.grow_area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.rowversion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.x_log)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.x_note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.x_status)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

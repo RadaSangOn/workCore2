@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PPcore.Models
 {
     public partial class product_group
     {
         public string product_group_code { get; set; }
+        
         public string product_group_desc { get; set; }
         public string x_status { get; set; }
         public string x_note { get; set; }

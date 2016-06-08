@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PPcore.Models
 {
@@ -7,6 +8,7 @@ namespace PPcore.Models
     {
         public string product_group_code { get; set; }
         public string product_type_code { get; set; }
+        
         public string product_type_desc { get; set; }
         public string x_status { get; set; }
         public string x_note { get; set; }
