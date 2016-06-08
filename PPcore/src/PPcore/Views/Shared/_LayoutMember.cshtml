@@ -104,7 +104,7 @@
             if (con == "members") {
                 $.datepicker.regional['th'] = {
                     dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, constrainInput: true,
-                    yearRange: "-100:+0", yearOffSet: 543,beforeShow:dateDefault
+                    yearRange: "-100:+0", yearOffSet: 543, beforeShow: dateDefault
                 };
                 $.datepicker.setDefaults($.datepicker.regional['th']);
                 $("#birthdate").datepicker($.datepicker.regional["th"]);
@@ -112,9 +112,10 @@
                 setEventDropdownProvince();
 
                 if (act == "Create") {
-                    $('#province_code').trigger("change"); $('#district_code').trigger("change"); $('#subdistrict_code').trigger("change"); $('#zip_code').trigger("change");
+                    $('#province_code').trigger("change"); $('#district_code').trigger("change"); $('#subdistrict_code').trigger("change");
                 } else if (act == "Edit") {
                     setTabColor();
+                    setProvinceData();
                 } else if (act == "Details") {
                     setTabColor();
                 }
@@ -139,7 +140,7 @@
             }
             if (act == "Details") {
                 $('input').each(function () {
-                    if (!($(this).attr('disabled')) ){
+                    if (!($(this).attr('disabled'))) {
                         $(this).attr({ 'disabled': 'disabled' });
                     }
                 });
@@ -151,7 +152,7 @@
                 if (!($('#birthdateButton').attr('disabled'))) {
                     $('#birthdateButton').attr({ 'disabled': 'disabled' });
                 }
-                $('#btnGoEdit').show();$('#btnSave').hide();
+                $('#btnGoEdit').show(); $('#btnSave').hide();
             }
 
             $('#btnPrint').on('click', function () {
@@ -292,6 +293,19 @@
                 });
             });
         }
+        function setProvinceData() {
+            $('#province_code').trigger("change");
+            setTimeout(function () {
+                $('#district_code').val('@ViewBag.districtCode');
+                $('#district_code').trigger("change");
+                setTimeout(function () {
+                    $('#subdistrict_code').val('@ViewBag.subdistrictCode');
+                    setTimeout(function () {
+                        $('#zip_code').val('@ViewBag.zipCode');
+                    }, 300);
+                }, 300);
+            }, 300);
+        }
         function setTabColor() {
             $.ajax({
                 type: 'get', url: '@Url.Action("ListTabNoData", "members", new { memberId = @ViewBag.memberId })',
@@ -299,7 +313,7 @@
                 console.log('resp ' + resp);
                 resp = JSON.parse(resp);
                 for (i = 0; i < resp.length; i++) {
-                    $('#'+resp[i].name).addClass('tabNoData');
+                    $('#' + resp[i].name).addClass('tabNoData');
                 }
             });
         }

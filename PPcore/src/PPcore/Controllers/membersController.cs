@@ -201,6 +201,15 @@ namespace PPcore.Controllers
             }
 
             ViewBag.memberId = id;
+
+            //For dropdown province; we need to manually assign it, then prepare viewbag for javascript
+            ViewBag.zipCode = member.zip_code;
+            ViewBag.subdistrictCode = member.subdistrict_code;
+            ViewBag.districtCode = member.district_code;
+            //ViewBag.provinceCode = member.province_code;
+
+
+
             prepareViewBag();
             clearImageUpload();
             return View(member);

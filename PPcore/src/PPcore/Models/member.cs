@@ -123,8 +123,10 @@ namespace PPcore.Models
         [Display(Name = "Social")]
         public string social_app_data { get; set; }
 
+        [HiddenInput]
         [Display(Name = "รูปถ่ายสมาชิก")]
         public string mem_photo { get; set; }
+        [HiddenInput]
         [Display(Name = "รูปของบัตรประชาชน")]
         public string cid_card_pic { get; set; }
 
